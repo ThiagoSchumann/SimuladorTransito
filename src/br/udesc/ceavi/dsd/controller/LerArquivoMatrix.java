@@ -37,7 +37,7 @@ public class LerArquivoMatrix {
 
         while (scanner.hasNext()) {
             String l = scanner.nextLine();
-            String[] lv = l.split(" ");
+            String[] lv = l.split("	");
 
             for (int i = 0; i < lv.length; i++) {
                 matrix[i][linhaIndex] = Integer.parseInt(lv[i]);
