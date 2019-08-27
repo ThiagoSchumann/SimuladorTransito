@@ -1,6 +1,6 @@
 package br.udesc.ceavi.dsd.principal;
 
-import br.udesc.ceavi.dsd.view.Principal;
+import br.udesc.ceavi.dsd.view.FramePrincipal;
 import java.awt.EventQueue;
 
 /**
@@ -10,24 +10,8 @@ import java.awt.EventQueue;
 public class SimuladorTransito {
 
     public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
         EventQueue.invokeLater(() -> {
-            new Principal().setVisible(true);
+            new FramePrincipal().setVisible(true);
         });
     }
 }
