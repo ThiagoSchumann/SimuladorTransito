@@ -133,8 +133,10 @@ public class MalhaTable extends JTable implements TableObserver {
     public void printCarro(Color cor, int colunm, int row) {
         BufferedImage origin = this.canvas[colunm][row];
         Graphics2D g = origin.createGraphics();
-        g.drawImage(Image.replaceColor(
-                Image.getImagem(Image.CARRO), cor.getRGB()),
+        g.drawImage(
+                Image.replaceColor(
+                        Image.getImagem(Image.CARRO),
+                         cor.getRGB()),
                 0, 0, null);
         g.dispose();
 

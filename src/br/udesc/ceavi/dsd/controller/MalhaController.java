@@ -1,5 +1,6 @@
 package br.udesc.ceavi.dsd.controller;
 
+import br.udesc.ceavi.dsd.model.casa.Casa;
 import br.udesc.ceavi.dsd.util.Image;
 import br.udesc.ceavi.dsd.view.TableObserver;
 import java.util.ArrayList;
@@ -15,6 +16,9 @@ public class MalhaController {
     private int[][] matrix;
     private int[][] carro;
 
+    private Casa[][] matrixCasa;
+    private List<Casa> casasRespawn;
+    
     private List<TableObserver> observers;
 
     public MalhaController(int[][] matrix) {

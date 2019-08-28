@@ -72,6 +72,7 @@ public class Image {
         BufferedImage newImage = new BufferedImage(width, height, image.getType());
         int color;
         int target = Color.black.getRGB();
+        
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 color = image.getRGB(i, j);
@@ -87,15 +88,10 @@ public class Image {
     }
 
     public static Color gerarCorAleatoriamente() {
-
         Random randColor = new Random();
-
         int r = randColor.nextInt(256);
-
         int g = randColor.nextInt(256);
-
         int b = randColor.nextInt(256);
-
         return new Color(r, g, b);
 
     }
