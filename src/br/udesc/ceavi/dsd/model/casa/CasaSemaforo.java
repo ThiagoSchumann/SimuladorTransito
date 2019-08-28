@@ -11,8 +11,8 @@ public class CasaSemaforo extends Casa {
 
     private Semaphore mutex;
 
-    public CasaSemaforo() {
-        super();
+    public CasaSemaforo(int valor,int colunm,int row) {
+        super(valor,colunm,row);
         mutex = new Semaphore(1);
     }
 }

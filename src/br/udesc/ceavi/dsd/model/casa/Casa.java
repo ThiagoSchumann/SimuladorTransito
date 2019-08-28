@@ -19,8 +19,11 @@ public abstract class Casa implements ICasa {
     
     protected List<Command> movimentacoes;
 
-    public Casa() {
+    public Casa(int valor,int colunm,int row) {
         this.movimentacoes = new ArrayList<>();
+        this.valor = valor;
+        this.colunm = colunm;
+        this.row = row;
     }
 
     public void addRota(Command command) {

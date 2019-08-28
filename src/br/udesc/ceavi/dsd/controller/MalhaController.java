@@ -1,6 +1,7 @@
 package br.udesc.ceavi.dsd.controller;
 
 import br.udesc.ceavi.dsd.model.casa.Casa;
+import br.udesc.ceavi.dsd.model.casa.CasaSemaforo;
 import br.udesc.ceavi.dsd.util.Image;
 import br.udesc.ceavi.dsd.view.TableObserver;
 import java.util.ArrayList;
@@ -14,26 +15,22 @@ import java.util.List;
 public class MalhaController {
 
     private int[][] matrix;
+
     private int[][] carro;
 
     private Casa[][] matrixCasa;
+
     private List<Casa> casasRespawn;
-    
+
     private List<TableObserver> observers;
 
     public MalhaController(int[][] matrix) {
         this.matrix = matrix;
         this.observers = new ArrayList<>();
+        this.matrixCasa = new Casa[matrix.length][matrix[0].length];
 
-        this.carro = new int[matrix.length][matrix[0].length];
-        for (int linha = 0; linha < matrix[0].length; linha++) {
-            for (int colunm = 0; colunm < matrix.length; colunm++) {
-                double random = Math.random();
-                if (matrix[colunm][linha] != 0 && random < 0.6) {
-                    carro[colunm][linha] = 1;
-                }
-            }
-        }
+        initCasas();
+        setRespawnCasa();
     }
 
     public void anexar(TableObserver observer) {
@@ -72,5 +69,18 @@ public class MalhaController {
                 }
             }
         }
+    }
+
+    private void initCasas() {
+        for (int linha = 0; linha < matrix[0].length; linha++) {
+            for (int coluna = 0; coluna < matrix.length; coluna++) {
+                matrixCasa[coluna][linha] = new CasaSemaforo(matrix[coluna][linha],coluna,linha);
+            }
+        }
+    }
+
+    private void setRespawnCasa() {
+        //condicao
+        //chamar linha e add
     }
 }
