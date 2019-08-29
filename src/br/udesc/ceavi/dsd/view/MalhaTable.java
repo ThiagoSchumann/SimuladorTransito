@@ -34,10 +34,20 @@ public class MalhaTable extends JTable implements TableObserver {
         this.controller = SystemController.getInstance();
         this.controller.getMalhaController().anexar(this);
         this.parentPanel = parent;
+        startBuffert();
+    }
+
+    public void startBuffert() {
         this.orginalMalhaImages = new BufferedImage[controller.getColumn()][controller.getRow()];
         this.canvas = new BufferedImage[controller.getColumn()][controller.getRow()];
         this.initializeProperties();
         initImages();
+
+        parentPanel.repaint();
+        parentPanel.revalidate();
+        this.repaint();
+        this.revalidate();
+        this.controller.getMalhaController().drawExpecialCasa();
     }
 
     /**
@@ -135,10 +145,9 @@ public class MalhaTable extends JTable implements TableObserver {
         g.drawImage(
                 Image.replaceColor(
                         Image.getImagem(Image.CARRO),
-                         cor.getRGB()),
+                        cor.getRGB()),
                 0, 0, null);
         g.dispose();
-
         parentPanel.repaint();
         parentPanel.revalidate();
         this.repaint();
@@ -162,4 +171,34 @@ public class MalhaTable extends JTable implements TableObserver {
         this.revalidate();
         this.repaint();
     }
+
+    @Override
+    public void drawRespawn(int colunm, int row) {
+        clearTableCell(colunm, row);
+        BufferedImage casa = this.canvas[colunm][row];
+        Graphics2D g = casa.createGraphics();
+        g.setColor(Color.GREEN);
+        g.drawOval(0, 0, casa.getWidth(), casa.getHeight());
+        g.dispose();
+        parentPanel.repaint();
+        parentPanel.revalidate();
+        this.revalidate();
+        this.repaint();
+    }
+
+    @Override
+    public void drawDeath(int colunm, int row) {
+        clearTableCell(colunm, row);
+        BufferedImage casa = this.canvas[colunm][row];
+        Graphics2D g = casa.createGraphics();
+        g.setColor(Color.RED);
+        g.drawOval(0, 0, casa.getWidth(), casa.getHeight());
+        g.dispose();
+        parentPanel.repaint();
+        parentPanel.revalidate();
+        this.revalidate();
+        this.repaint();
+    }
+    
+
 }

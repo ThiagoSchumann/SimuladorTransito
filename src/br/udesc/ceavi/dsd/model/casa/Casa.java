@@ -16,10 +16,10 @@ public abstract class Casa implements ICasa {
     protected Carro carro;
     private int colunm, row;
     private int valor;
-    
+
     protected List<Command> movimentacoes;
 
-    public Casa(int valor,int colunm,int row) {
+    public Casa(int valor, int colunm, int row) {
         this.movimentacoes = new ArrayList<>();
         this.valor = valor;
         this.colunm = colunm;
@@ -29,17 +29,29 @@ public abstract class Casa implements ICasa {
     public void addRota(Command command) {
         movimentacoes.add(command);
     }
-    
+
     public Command getRota() {
         if (movimentacoes.size() != 1) {
             Collections.shuffle(movimentacoes);
         }
         return movimentacoes.get(0);
     }
-    
-    public int getValor(){
+
+    public int getValor() {
         return valor;
     }
 
+    @Override
+    public String toString() {
+        return "Casa{" + "colunm=" + colunm + ", row=" + row + ", valor=" + valor + '}';
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColunm() {
+        return colunm;
+    }
 
 }

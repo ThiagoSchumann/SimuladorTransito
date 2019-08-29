@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -41,13 +42,18 @@ public class FrameConfig extends JFrame {
     private ButtonGroup radioGrupo;
     private GridBagConstraints cons;
     private SystemController controller;
+    private FramePrincipal framePrincipal;
 
     public FrameConfig() {
         this.controller = SystemController.getInstance();
-        SystemController.getInstance();
         initFrameConfig();
         initComponents();
         initListeners();
+    }
+
+    public FrameConfig(FramePrincipal framePrincipal) {
+        this();
+        this.framePrincipal = framePrincipal;
     }
 
     private void initFrameConfig() {
@@ -189,10 +195,19 @@ public class FrameConfig extends JFrame {
             controller.setFactory("Semafaro");
         }
         controller.getMalhaController().initMalha();
-        EventQueue.invokeLater(() -> {
-            new FramePrincipal().setVisible(true);
-        });
+        if (framePrincipal != null) {
+            controller.rebutMalha();
+            framePrincipal.initTableFrame();
+        } else {
+            EventQueue.invokeLater(() -> {
+                new FramePrincipal().setVisible(true);
+            });
+        }
         this.dispose();
+    }
+
+    private void btnCreateMalhaRecaregarListener() {
+        
     }
 
 }

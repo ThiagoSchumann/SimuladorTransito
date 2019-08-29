@@ -59,12 +59,6 @@ public class SystemController {
         return malhaController.getCasaValue(col, row);
     }
 
-    public void startUsingSemaforo() {
-    }
-
-    public void startUsingMonitor() {
-    }
-
     public MalhaController getMalhaController() {
         return malhaController;
     }
@@ -75,6 +69,13 @@ public class SystemController {
 
     public void setFactory(String factory) {
         this.factory = factory.equals("Monitor") ? new FactoryMonitor() : new FactorySemaphore();
+    }
+
+    /**
+     * Rebute Malha
+     */
+    public void rebutMalha() {
+        this.malhaController.removeObservers();
     }
 
 }

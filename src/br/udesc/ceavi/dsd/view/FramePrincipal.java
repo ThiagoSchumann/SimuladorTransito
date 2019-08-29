@@ -5,9 +5,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -31,16 +31,16 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
     private static Dimension sizePrefesss = new Dimension(800, 800);
     private JPanel jpConfig;
     private JPanel jpTable;
-    private JButton btnStart, btnStop;
+    private JButton btnStop;
+    private JButton btnStart;
 
+    private JButton btnCarregarNovaMatriz;
+    private JButton btnLimparMatriz;
     private JSpinner jsNumCarro;
     private JLabel lbLimiteCarro;
-
     private JLabel lbNumCarrosSimulacao;
-
     private SystemController controller;
     private GridBagConstraints cons;
-
     private MalhaTable table;
 
     public FramePrincipal() {
@@ -94,6 +94,7 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         JPanel jPConfingII = new JPanel();
         setSizeI(jPConfingII, size);
         jPConfingII.setMaximumSize(size);
+        jPConfingII.setBorder(BorderFactory.createLineBorder(new Color(0, 0, 0)));
 
         this.jpConfig.add(jPConfingII);
         jPConfingII.setLayout(new GridBagLayout());
@@ -110,36 +111,36 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         this.btnStop = new JButton("Stop");
         this.btnStart = new JButton("Start");
         this.jsNumCarro = new JSpinner();
-        jsNumCarro.setModel(new SpinnerNumberModel(1, 1, null, 1));
+        jsNumCarro.setModel(new SpinnerNumberModel(1, 1, controller.getMalhaController().getNumCasasValida(), 1));
         this.lbLimiteCarro = new JLabel("Numero de Carros: ");
 
         Insets insets = new Insets(0, 10, 0, 10);
 
         cons = new GridBagConstraints();
-        cons.gridx = 1;
+        cons.gridx = 0;
         cons.gridy = 0;
         cons.fill = GridBagConstraints.HORIZONTAL;
         cons.insets = insets;
         jpConfingIII.add(this.lbLimiteCarro, cons);
+        jpConfingIII.setBorder(BorderFactory.createLineBorder(new Color(102, 102, 0)));
 
         cons = new GridBagConstraints();
-        cons.gridx = 1;
+        cons.gridx = 0;
         cons.gridy = 1;
         cons.fill = GridBagConstraints.HORIZONTAL;
         cons.insets = insets;
         jpConfingIII.add(this.jsNumCarro, cons);
 
         cons = new GridBagConstraints();
-        cons.gridx = 2;
+        cons.gridx = 1;
         cons.gridy = 0;
         cons.ipadx = 25;
         cons.fill = GridBagConstraints.HORIZONTAL;
         cons.insets = insets;
-        this.btnStart.setEnabled(false);
         jpConfingIII.add(this.btnStart, cons);
 
         cons = new GridBagConstraints();
-        cons.gridx = 2;
+        cons.gridx = 1;
         cons.gridy = 1;
         cons.ipadx = 25;
         cons.fill = GridBagConstraints.HORIZONTAL;
@@ -150,10 +151,37 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         cons = new GridBagConstraints();
         cons.gridx = 0;
         cons.gridy = 2;
-        cons.gridwidth = 3;
-        cons.insets = new Insets(15, 0, 0, 0);
+        cons.ipadx = 25;
+        cons.gridwidth = 1;
         cons.fill = GridBagConstraints.HORIZONTAL;
-        lbNumCarrosSimulacao = new JLabel("Numero de Carros Na Simulação Atualmente: ");
+        cons.insets = insets;
+        btnCarregarNovaMatriz = new JButton("Carregar Nova Matriz");
+        jpConfingIII.add(btnCarregarNovaMatriz, cons);
+        btnLimparMatriz = new JButton("Limpar Matriz");
+
+        cons = new GridBagConstraints();
+        cons.gridx = 1;
+        cons.gridy = 2;
+        cons.ipadx = 25;
+        cons.gridwidth = 1;
+        cons.fill = GridBagConstraints.HORIZONTAL;
+        cons.insets = insets;
+        jpConfingIII.add(btnLimparMatriz, cons);
+
+        cons = new GridBagConstraints();
+        cons.gridx = 0;
+        cons.gridy = 2;
+        cons.gridwidth = 3;
+        cons.fill = GridBagConstraints.NONE;
+        cons.anchor = GridBagConstraints.CENTER;
+        jPConfingII.add(new JLabel("Numero de Carros Na Simulação Atualmente: "), cons);
+
+        cons = new GridBagConstraints();
+        cons.gridx = 0;
+        cons.gridy = 3;
+        cons.gridwidth = 3;
+        cons.fill = GridBagConstraints.NONE;
+        lbNumCarrosSimulacao = new JLabel("10000");
         jPConfingII.add(lbNumCarrosSimulacao, cons);
         initTableFrame();
     }
@@ -166,15 +194,17 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
 
     @Override
     public void notificarNumeroDeCarro(int numCarro) {
-        lbNumCarrosSimulacao.setText("Numero de Carros Na Simulação Atualmente: " + numCarro);
+        lbNumCarrosSimulacao.setText("" + numCarro);
     }
 
     private void initListeners() {
         this.btnStart.addActionListener((e) -> btnStartListeners());
         this.btnStop.addActionListener((e) -> btnStopListeners());
+        this.btnCarregarNovaMatriz.addActionListener((e) -> btnCarregarNovaMatrizListeners());
     }
 
-    private void initTableFrame() {
+    public void initTableFrame() {
+        jpTable.removeAll();
         jpTable.setLayout(new BoxLayout(jpTable, BoxLayout.PAGE_AXIS));
         table = new MalhaTable(jpTable);
         JScrollPane pane = new JScrollPane();
@@ -196,5 +226,11 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
     }
 
     private void btnStartListeners() {
+    }
+
+    private void btnCarregarNovaMatrizListeners() {
+        EventQueue.invokeLater(() -> {
+            new FrameConfig(this).setVisible(true);
+        });
     }
 }
