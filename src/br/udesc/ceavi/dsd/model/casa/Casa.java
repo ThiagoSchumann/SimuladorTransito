@@ -29,12 +29,16 @@ public abstract class Casa implements ICasa {
     public void addRota(Command command) {
         movimentacoes.add(command);
     }
-
+    
     public Command getRota() {
         if (movimentacoes.size() != 1) {
             Collections.shuffle(movimentacoes);
         }
         return movimentacoes.get(0);
+    }
+    
+    public int getValor(){
+        return valor;
     }
 
 }
