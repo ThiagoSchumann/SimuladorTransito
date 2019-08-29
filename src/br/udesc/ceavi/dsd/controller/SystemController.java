@@ -1,8 +1,9 @@
 package br.udesc.ceavi.dsd.controller;
 
+import br.udesc.ceavi.dsd.abstractfactory.AbstractFactory;
+import br.udesc.ceavi.dsd.abstractfactory.FactoryMonitor;
+import br.udesc.ceavi.dsd.abstractfactory.FactorySemaphore;
 import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -12,14 +13,16 @@ public class SystemController {
 
     private static SystemController instance;
 
-    private MalhaController malhaController;
-
     public static synchronized SystemController getInstance() {
         if (instance == null) {
             instance = new SystemController();
         }
         return instance;
     }
+
+    private MalhaController malhaController;
+
+    private AbstractFactory factory;
 
     private SystemController() {
     }
@@ -28,18 +31,10 @@ public class SystemController {
      * Ler Arquivo onde contem a matriz
      *
      * @param text
-     * @return true sucesso na leitura
      */
-    public boolean readFile(String text) {
-        try {
-            LerArquivoMatrix ler = new LerArquivoMatrix(text);
-            malhaController = new MalhaController(ler.getMatrix());
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return true;
+    public void readFile(String text) throws FileNotFoundException, Exception {
+        LerArquivoMatrix ler = new LerArquivoMatrix(text);
+        malhaController = new MalhaController(ler.getMatrix());
     }
 
     /**
@@ -60,8 +55,8 @@ public class SystemController {
         return malhaController.getRow();
     }
 
-    public Object getMatrix(int col, int row) {
-        return malhaController.getCasa(col, row);
+    public Object getCasa(int col, int row) {
+        return malhaController.getCasaValue(col, row);
     }
 
     public void startUsingSemaforo() {
@@ -72,6 +67,14 @@ public class SystemController {
 
     public MalhaController getMalhaController() {
         return malhaController;
+    }
+
+    public AbstractFactory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(String factory) {
+        this.factory = factory.equals("Monitor") ? new FactoryMonitor() : new FactorySemaphore();
     }
 
 }

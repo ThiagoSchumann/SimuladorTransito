@@ -1,7 +1,7 @@
 package br.udesc.ceavi.dsd.model.carro;
 
 import br.udesc.ceavi.dsd.model.casa.Casa;
-import br.udesc.ceavi.dsd.Command.Command;
+import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.util.Image;
 
 /**
@@ -10,10 +10,10 @@ import br.udesc.ceavi.dsd.util.Image;
  */
 public abstract class Carro extends Thread implements ICarro {
 
-    private boolean ativo;
-    private final int rgb;
-    private Casa casa;
-    private Command rota;
+    protected boolean ativo;
+    protected final int rgb;
+    protected Casa casa;
+    protected Command rota;
 
     public Carro() {
         this.ativo = true;

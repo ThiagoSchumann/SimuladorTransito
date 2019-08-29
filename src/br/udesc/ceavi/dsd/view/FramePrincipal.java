@@ -7,20 +7,17 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 
@@ -34,18 +31,15 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
     private static Dimension sizePrefesss = new Dimension(800, 800);
     private JPanel jpConfig;
     private JPanel jpTable;
-    private JTextField tfArquivo;
-    private JButton btnStart, btnStop, btnAbrir;
+    private JButton btnStart, btnStop;
 
     private JSpinner jsNumCarro;
     private JLabel lbLimiteCarro;
 
-    private JRadioButton rbMonitor;
-    private JRadioButton rbSemaforo;
-    private ButtonGroup radioGrupo;
     private JLabel lbNumCarrosSimulacao;
 
     private SystemController controller;
+    private GridBagConstraints cons;
 
     private MalhaTable table;
 
@@ -87,10 +81,6 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
 
         initConfigComponets();
 
-        size = new Dimension(0, 650);
-        setSizeI(jpTable, size);
-        this.jpTable.setMaximumSize(size);
-
         contentPane.add(jpConfig, BorderLayout.NORTH);
         contentPane.add(jpTable, BorderLayout.CENTER);
 
@@ -107,30 +97,10 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
 
         this.jpConfig.add(jPConfingII);
         jPConfingII.setLayout(new GridBagLayout());
-        GridBagConstraints cons = new GridBagConstraints();
-
-        cons.gridx = 0;
-        cons.gridy = 0;
-        jPConfingII.add(new JLabel("Arquivo: "), cons);
-
-        this.tfArquivo = new JTextField();
-        this.tfArquivo.setEditable(false);
-        size = new Dimension(350, 24);
-        setSizeI(tfArquivo, size);
         cons = new GridBagConstraints();
-        cons.gridx = 1;
-        cons.gridy = 0;
-        jPConfingII.add(this.tfArquivo, cons);
-
-        this.btnAbrir = new JButton("Abrir Malha");
-        cons = new GridBagConstraints();
-        cons.gridx = 2;
-        cons.gridy = 0;
-        jPConfingII.add(this.btnAbrir, cons);
 
         JPanel jpConfingIII = new JPanel();
         jpConfingIII.setLayout(new GridBagLayout());
-        cons = new GridBagConstraints();
         cons.gridx = 0;
         cons.gridy = 1;
         cons.gridwidth = 3;
@@ -139,29 +109,11 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
 
         this.btnStop = new JButton("Stop");
         this.btnStart = new JButton("Start");
-        this.radioGrupo = new ButtonGroup();
-        this.rbMonitor = new JRadioButton("Monitor");
-        this.rbSemaforo = new JRadioButton("Semafaro");
         this.jsNumCarro = new JSpinner();
         jsNumCarro.setModel(new SpinnerNumberModel(1, 1, null, 1));
         this.lbLimiteCarro = new JLabel("Numero de Carros: ");
-        this.radioGrupo.add(rbMonitor);
-        this.radioGrupo.add(rbSemaforo);
 
         Insets insets = new Insets(0, 10, 0, 10);
-        cons = new GridBagConstraints();
-        cons.gridx = 0;
-        cons.gridy = 0;
-        cons.fill = GridBagConstraints.HORIZONTAL;
-        cons.insets = insets;
-        jpConfingIII.add(this.rbMonitor, cons);
-
-        cons = new GridBagConstraints();
-        cons.gridx = 0;
-        cons.gridy = 1;
-        cons.fill = GridBagConstraints.HORIZONTAL;
-        cons.insets = insets;
-        jpConfingIII.add(this.rbSemaforo, cons);
 
         cons = new GridBagConstraints();
         cons.gridx = 1;
@@ -203,6 +155,7 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         cons.fill = GridBagConstraints.HORIZONTAL;
         lbNumCarrosSimulacao = new JLabel("Numero de Carros Na Simulação Atualmente: ");
         jPConfingII.add(lbNumCarrosSimulacao, cons);
+        initTableFrame();
     }
 
     private void setSizeI(JComponent c, Dimension d) {
@@ -217,59 +170,31 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
     }
 
     private void initListeners() {
-        this.btnAbrir.addActionListener((e) -> btnAbrirListeners());
         this.btnStart.addActionListener((e) -> btnStartListeners());
         this.btnStop.addActionListener((e) -> btnStopListeners());
     }
 
-    private void btnAbrirListeners() {
-        JFileChooser fileChooser = new JFileChooser(System.getProperty("user.dir"));
-        int retorno = fileChooser.showOpenDialog(this);
-
-        if (retorno == JFileChooser.APPROVE_OPTION) {
-            String absolutePath = fileChooser.getSelectedFile().getAbsolutePath();
-            if (controller.readFile(absolutePath)) {
-                tfArquivo.setText(absolutePath);
-                btnStart.setEnabled(true);
-                table = new MalhaTable(jpTable);
-                JScrollPane pane = new JScrollPane();
-                pane.setViewportView(table);
-                pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-                pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
-                pane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-
-                pane.setBackground(new Color(0, 0, 0, 0));
-                pane.setOpaque(false);
-                pane.getViewport().setOpaque(true);
-                pane.setViewportBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-                pane.getViewport().setBackground(new Color(0, 0, 0, 0));
-                jpTable.removeAll();
-                jpTable.add(pane);
-                jpTable.repaint();
-                jpTable.revalidate();
-            } else {
-
-            }
-        }
-
+    private void initTableFrame() {
+        jpTable.setLayout(new BoxLayout(jpTable, BoxLayout.PAGE_AXIS));
+        table = new MalhaTable(jpTable);
+        JScrollPane pane = new JScrollPane();
+        pane.setViewportView(table);
+        pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        pane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        pane.setBackground(new Color(0, 0, 0, 0));
+        pane.setOpaque(false);
+        pane.getViewport().setOpaque(true);
+        pane.setViewportBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        pane.getViewport().setBackground(new Color(0, 0, 0, 0));
+        jpTable.add(pane);
+        jpTable.repaint();
+        jpTable.revalidate();
     }
 
     private void btnStopListeners() {
     }
 
     private void btnStartListeners() {
-        if (rbMonitor.isSelected()) {
-            controller.startUsingMonitor();
-            btnAbrir.setEnabled(false);
-            btnStart.setEnabled(false);
-            btnStop.setEnabled(true);
-        } else if (rbSemaforo.isSelected()) {
-            controller.startUsingSemaforo();
-            btnAbrir.setEnabled(false);
-            btnStart.setEnabled(false);
-            btnStop.setEnabled(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "Selecione O Tipo de Controller de Regiao Critica");
-        }
     }
 }

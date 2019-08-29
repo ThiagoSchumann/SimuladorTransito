@@ -25,22 +25,19 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class MalhaTable extends JTable implements TableObserver {
 
-    private MalhaController controller;
+    private SystemController controller;
     private JPanel parentPanel;
     private BufferedImage[][] orginalMalhaImages;
     private BufferedImage[][] canvas;
 
     public MalhaTable(JPanel parent) {
-        this.controller = SystemController.getInstance().getMalhaController();
+        this.controller = SystemController.getInstance();
+        this.controller.getMalhaController().anexar(this);
         this.parentPanel = parent;
-
         this.orginalMalhaImages = new BufferedImage[controller.getColumn()][controller.getRow()];
         this.canvas = new BufferedImage[controller.getColumn()][controller.getRow()];
-
-        initImages();
         this.initializeProperties();
-        controller.anexar(this);
-        controller.pintarCarro();
+        initImages();
     }
 
     /**
@@ -68,6 +65,8 @@ public class MalhaTable extends JTable implements TableObserver {
                 canvas[colunm][row] = Image.getImagem((int) controller.getCasa(colunm, row));
             }
         }
+        this.repaint();
+        this.revalidate();
     }
 
     private class ManhaTableModel extends AbstractTableModel {

@@ -12,4 +12,7 @@ public interface TableObserver {
     public void printCarro(Color cor, int colunm,int row);
     
     public void clearTableCell(int colunm,int row);
+
+    public void repaint();
+
 }

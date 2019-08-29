@@ -1,6 +1,5 @@
 package br.udesc.ceavi.dsd.controller;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -14,7 +13,7 @@ public class LerArquivoMatrix {
     private int[][] matrix;
     private String caminho;
 
-    public LerArquivoMatrix(String caminho) throws FileNotFoundException {
+    public LerArquivoMatrix(String caminho) throws FileNotFoundException, Exception {
         this.caminho = caminho;
         lerAquivo();
     }
@@ -26,12 +25,17 @@ public class LerArquivoMatrix {
         return matrix;
     }
 
-    private void lerAquivo() throws FileNotFoundException {
+    private void lerAquivo() throws FileNotFoundException, Exception {
         Scanner scanner = new Scanner(new File(caminho));
 
-        int linha = Integer.parseInt(scanner.nextLine());
-        int coluna = Integer.parseInt(scanner.nextLine());
-        matrix = new int[coluna][linha];
+        try {
+            int linha = Integer.parseInt(scanner.nextLine());
+            int coluna = Integer.parseInt(scanner.nextLine());
+            matrix = new int[coluna][linha];
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new Exception("Arquivo Sem Formatação Adequada");
+        }
 
         int linhaIndex = 0;
 

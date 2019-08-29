@@ -1,5 +1,6 @@
 package br.udesc.ceavi.dsd.controller;
 
+import br.udesc.ceavi.dsd.abstractfactory.AbstractFactory;
 import br.udesc.ceavi.dsd.model.casa.Casa;
 import br.udesc.ceavi.dsd.model.casa.CasaSemaforo;
 import br.udesc.ceavi.dsd.util.Image;
@@ -28,7 +29,9 @@ public class MalhaController {
         this.matrix = matrix;
         this.observers = new ArrayList<>();
         this.matrixCasa = new Casa[matrix.length][matrix[0].length];
+    }
 
+    public void initMalha() {
         initCasas();
         setRespawnCasa();
     }
@@ -38,15 +41,15 @@ public class MalhaController {
     }
 
     public int getColumn() {
-        return matrix.length;
+        return matrixCasa.length;
     }
 
     public int getRow() {
-        return matrix[0].length;
+        return matrixCasa[0].length;
     }
 
-    public Object getCasa(int col, int row) {
-        return matrix[col][row];
+    public Object getCasaValue(int col, int row) {
+        return matrixCasa[col][row].getValor();
     }
 
     private void imprimirMatrizTest() {
@@ -72,9 +75,10 @@ public class MalhaController {
     }
 
     private void initCasas() {
-        for (int linha = 0; linha < matrix[0].length; linha++) {
+        AbstractFactory factory = SystemController.getInstance().getFactory();
+        for (int row = 0; row < matrix[0].length; row++) {
             for (int coluna = 0; coluna < matrix.length; coluna++) {
-                matrixCasa[coluna][linha] = new CasaSemaforo(matrix[coluna][linha],coluna,linha);
+                matrixCasa[coluna][row] = factory.createCasa(matrix[coluna][row], coluna, row);
             }
         }
     }
@@ -83,4 +87,6 @@ public class MalhaController {
         //condicao
         //chamar linha e add
     }
+
+    
 }

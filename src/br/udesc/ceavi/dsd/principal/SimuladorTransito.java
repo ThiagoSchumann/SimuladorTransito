@@ -1,6 +1,6 @@
 package br.udesc.ceavi.dsd.principal;
 
-import br.udesc.ceavi.dsd.view.FramePrincipal;
+import br.udesc.ceavi.dsd.view.FrameConfig;
 import java.awt.EventQueue;
 
 /**
@@ -11,7 +11,7 @@ public class SimuladorTransito {
 
     public static void main(String args[]) {
         EventQueue.invokeLater(() -> {
-            new FramePrincipal().setVisible(true);
+            new FrameConfig().setVisible(true);
         });
     }
 }

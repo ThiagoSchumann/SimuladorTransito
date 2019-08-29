@@ -1,4 +1,4 @@
-package br.udesc.ceavi.dsd.Command;
+package br.udesc.ceavi.dsd.command;
 
 import java.util.List;
 

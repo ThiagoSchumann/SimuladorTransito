@@ -1,6 +1,6 @@
 package br.udesc.ceavi.dsd.model.casa;
 
-import br.udesc.ceavi.dsd.Command.Command;
+import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.model.carro.Carro;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +35,10 @@ public abstract class Casa implements ICasa {
             Collections.shuffle(movimentacoes);
         }
         return movimentacoes.get(0);
+    }
+
+    public int getValor() {
+        return valor;
     }
 
 }
