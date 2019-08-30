@@ -6,6 +6,7 @@ import br.udesc.ceavi.dsd.model.carro.ICarro;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -85,5 +86,4 @@ public abstract class Casa implements ICasa {
         return p;
     }
 
-    
 }

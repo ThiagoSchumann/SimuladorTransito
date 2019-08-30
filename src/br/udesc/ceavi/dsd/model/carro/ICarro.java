@@ -8,23 +8,25 @@ import br.udesc.ceavi.dsd.model.casa.ICasa;
  */
 public interface ICarro {
 
-    void desativar();
+    public void desativar();
 
-    void enterSimulation(ICasa casaAleatoria);
+    public void enterSimulation(ICasa casaAleatoria);
 
     @Override
-    boolean equals(Object obj);
+    public boolean equals(Object obj);
 
-    int getRBG();
+    public int getRBG();
 
-    void getRota();
+    public void obterRota();
 
-    void mover();
+    public void mover();
 
-    void setCasa(ICasa newCasa);
+    public void setCasa(ICasa newCasa);
 
     public ICasa getCasa();
 
     public void sleep(int tempo) throws InterruptedException;
+
+    public long getId();
 
 }

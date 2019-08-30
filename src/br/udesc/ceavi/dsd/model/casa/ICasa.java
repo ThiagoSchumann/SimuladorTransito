@@ -2,32 +2,30 @@ package br.udesc.ceavi.dsd.model.casa;
 
 import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
-import java.util.List;
 
 /**
  *
- * @author Gustavo C. Santos
- * 29/08/2019
+ * @author Gustavo C. Santos 29/08/2019
  */
 public interface ICasa {
 
-    void addRota(Command command);
+    public void addRota(Command command);
 
-    int getColunm();
+    public int getColunm();
 
-    Command getRota();
+    public Command getRota();
 
-    int getRow();
+    public int getRow();
 
-    int getValor();
+    public int getValor();
 
-    void liberarRecurso();
+    public void liberarRecurso();
 
-    void mover(ICarro carro);
+    public void mover(ICarro carro);
 
-    void setCarro(ICarro carro);
+    public void setCarro(ICarro carro);
 
-    boolean reservarCasa();
+    public boolean reservarCasa();
 
     public ICarro getCarro();
 

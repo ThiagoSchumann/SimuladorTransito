@@ -48,6 +48,8 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         initFrameProperty();
         initComponnnets();
         initListeners();
+        btnLimparMatriz.setEnabled(false);
+        controller.addObserver(this);
     }
 
     private void initFrameProperty() {
@@ -228,9 +230,15 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
 
     private void btnStartListeners() {
         jsNumCarro.setEnabled(false);
+        btnStart.setEnabled(false);
+        btnStop.setEnabled(true);
+        btnLimparMatriz.setEnabled(false);
+        btnCarregarNovaMatriz.setEnabled(false);
+        
         int numeroCarro = (int) jsNumCarro.getValue();
+        
         System.out.println(numeroCarro);
-        controller.startSimulation(1);
+        controller.startSimulation(numeroCarro);
     }
 
     private void btnCarregarNovaMatrizListeners() {

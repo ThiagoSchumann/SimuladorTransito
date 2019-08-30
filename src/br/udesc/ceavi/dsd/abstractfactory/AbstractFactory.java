@@ -9,7 +9,5 @@ import br.udesc.ceavi.dsd.model.casa.ICasa;
  */
 public interface AbstractFactory {
 
-    public ICarro createCarro();
-
     public ICasa createCasa(int valor, int colunm, int row);
 }

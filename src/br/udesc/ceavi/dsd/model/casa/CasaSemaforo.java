@@ -29,7 +29,7 @@ public class CasaSemaforo extends Casa {
                 casaAnterior.setCarro(null);
             }
             carro.setCasa(this);
-            super.setCarro(carro);
+            setCarro(carro);
         } catch (InterruptedException ex) {
             Logger.getLogger(CasaSemaforo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -38,7 +38,7 @@ public class CasaSemaforo extends Casa {
     @Override
     public boolean reservarCasa() {
         try {
-            return mutex.tryAcquire(500, TimeUnit.MILLISECONDS);
+            return mutex.tryAcquire(75, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ex) {
             Logger.getLogger(CasaSemaforo.class.getName()).log(Level.SEVERE, null, ex);
             return false;

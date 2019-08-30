@@ -1,7 +1,11 @@
 package br.udesc.ceavi.dsd.model.casa;
 
 import br.udesc.ceavi.dsd.model.carro.ICarro;
-
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -10,25 +14,39 @@ import br.udesc.ceavi.dsd.model.carro.ICarro;
  */
 public class CasaMonitor extends Casa {
 
+    private Lock lock;
+
     public CasaMonitor(int valor, int colunm, int row) {
         super(valor, colunm, row);
+        this.lock = new ReentrantLock(true);
     }
 
     @Override
-    public void mover(ICarro carro) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public synchronized void mover(ICarro carro) {
+        if (super.getCarro() != null) {
+            try {
+                wait();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(CasaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        setCarro(carro);
     }
 
     @Override
     public synchronized void liberarRecurso() {
-        this.notify();
+        notify();
     }
 
-    
+    //Necessita do Lock
     @Override
-    public boolean reservarCasa()  {
-           return true;
+    public boolean reservarCasa() {
+        try {
+            return lock.tryLock(75, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(CasaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
-
 
 }

@@ -1,22 +1,28 @@
 package br.udesc.ceavi.dsd.model.carro;
 
 import br.udesc.ceavi.dsd.command.Command;
+import br.udesc.ceavi.dsd.command.EntraNaMalhaCommand;
+import br.udesc.ceavi.dsd.command.MatarCarroCommand;
+import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
 import br.udesc.ceavi.dsd.util.Image;
-import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Gustavo C. Santos 27/08/2019
  */
-public abstract class Carro extends Thread implements ICarro {
+public class Carro extends Thread implements ICarro {
 
-    protected boolean ativo;
-    protected final int rgb;
-    protected ICasa casa;
-    protected Command rota;
+    private boolean ativo;
+    private final int rgb;
+    private ICasa casa;
+    private Command rota;
+    private SystemController systemController;
 
     public Carro() {
+        this.systemController = SystemController.getInstance();
         this.ativo = true;
         this.rgb = Image.gerarRGB();
     }
@@ -32,23 +38,13 @@ public abstract class Carro extends Thread implements ICarro {
     }
 
     @Override
-    public void getRota() {
+    public void obterRota() {
         rota = this.casa.getRota();
     }
 
     @Override
     public void setCasa(ICasa newCasa) {
         this.casa = newCasa;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + (this.ativo ? 1 : 0);
-        hash = 59 * hash + this.rgb;
-        hash = 59 * hash + Objects.hashCode(this.casa);
-        hash = 59 * hash + Objects.hashCode(this.rota);
-        return hash;
     }
 
     @Override
@@ -72,8 +68,45 @@ public abstract class Carro extends Thread implements ICarro {
     }
 
     @Override
-    public void sleep(int tempo) throws InterruptedException{
+    public void sleep(int tempo) throws InterruptedException {
         Thread.sleep(tempo);
     }
-    
+
+    @Override
+    public void enterSimulation(ICasa casaAleatoria) {
+        rota = new EntraNaMalhaCommand(this, casaAleatoria);
+        start();
+    }
+
+    @Override
+    public void mover() {
+        SystemController.getInstance().execute(rota);
+        rota = null;
+    }
+
+    @Override
+    public void run() {
+        mover();
+        try {
+            Thread.sleep(systemController.getRandom().nextInt(10000));
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        rota = new MatarCarroCommand(getCasa());
+        mover();
+//        le (ativo) {
+//            obterRota();
+//            if (rota == null) {
+//                break;
+//            }
+//            mover();
+//            try {
+//                Thread.sleep(500);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
+    }
+
 }

@@ -3,6 +3,7 @@ package br.udesc.ceavi.dsd.command;
 import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,13 +15,6 @@ import java.util.logging.Logger;
  */
 public class MoverNCasaCommand implements Command {
 
-    public MoverNCasaCommand(ICasa origem, ICasa destino, List<ICasa> caminho, List<ICasa> casaLivres) {
-        this.origem = origem;
-        this.destino = destino;
-        this.caminho = caminho;
-        this.casaLivres = casaLivres;
-    }
-
     //Começo de Tudo
     private ICasa origem;
     //Fim de Tudo
@@ -31,6 +25,13 @@ public class MoverNCasaCommand implements Command {
 
     //Armazena as casa cujo o recurso esta sobre nossa posse
     private List<ICasa> casaLivres;
+
+    public MoverNCasaCommand(ICasa origem, ICasa destino, List<ICasa> caminho) {
+        this.origem = origem;
+        this.destino = destino;
+        this.caminho = caminho;
+        this.casaLivres = new ArrayList<>();
+    }
 
     @Override
     public void executar() {
@@ -54,6 +55,7 @@ public class MoverNCasaCommand implements Command {
                 Logger.getLogger(MoverNCasaCommand.class.getName()).log(Level.SEVERE, null, ex);
             }
         } while (!liberado);
+        
         casaLivres.add(0, origem);
         ICarro carro = null;
         for (int i = 0; i < casaLivres.size() - 1; i++) {
@@ -87,11 +89,7 @@ public class MoverNCasaCommand implements Command {
      * @return
      */
     private boolean caminhoInteiramenteLivre() {
-        boolean liberado = false;
-        if (casaLivres.size() == caminho.size()) {//
-            liberado = true;
-        }
-        return liberado;
+        return casaLivres.size() == caminho.size();
     }
 
 }

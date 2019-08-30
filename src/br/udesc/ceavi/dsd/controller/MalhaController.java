@@ -161,7 +161,7 @@ public class MalhaController {
         observers.clear();
     }
 
-    public ICasa getCasaAleatoria() {
+    public ICasa getRespawnAleatorio() {
         Collections.shuffle(casasRespawn);
         return casasRespawn.get(SystemController.getInstance().getRandom().nextInt(casasRespawn.size() - 1));
     }
@@ -177,5 +177,6 @@ public class MalhaController {
             observer.printCarro(color, colunm, row);
         }
     }
+
 
 }

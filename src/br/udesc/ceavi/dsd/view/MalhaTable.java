@@ -148,10 +148,7 @@ public class MalhaTable extends JTable implements TableObserver {
                         cor),
                 0, 0, null);
         g.dispose();
-        parentPanel.repaint();
-        parentPanel.revalidate();
-        this.repaint();
-        this.revalidate();
+
     }
 
     @Override
@@ -165,39 +162,30 @@ public class MalhaTable extends JTable implements TableObserver {
         g.drawImage(orginalMalhaImages[colunm][row], 0, 0, null);
         this.canvas[colunm][row] = novo;
         g.dispose();
-
-        parentPanel.repaint();
-        parentPanel.revalidate();
-        this.revalidate();
         this.repaint();
+        parentPanel.repaint();
     }
 
     @Override
     public void drawRespawn(int colunm, int row) {
-        clearTableCell(colunm, row);
-        BufferedImage casa = this.canvas[colunm][row];
-        Graphics2D g = casa.createGraphics();
-        g.setColor(Color.GREEN);
-        g.drawOval(0, 0, casa.getWidth(), casa.getHeight());
-        g.dispose();
-        parentPanel.repaint();
-        parentPanel.revalidate();
-        this.revalidate();
-        this.repaint();
+//        clearTableCell(colunm, row);
+//        BufferedImage casa = this.canvas[colunm][row];
+//        Graphics2D g = casa.createGraphics();
+//        g.setColor(Color.GREEN);
+//        g.drawOval(0, 0, casa.getWidth(), casa.getHeight());
+//        g.dispose();
+
     }
 
     @Override
     public void drawDeath(int colunm, int row) {
-        clearTableCell(colunm, row);
-        BufferedImage casa = this.canvas[colunm][row];
-        Graphics2D g = casa.createGraphics();
-        g.setColor(Color.RED);
-        g.drawOval(0, 0, casa.getWidth(), casa.getHeight());
-        g.dispose();
-        parentPanel.repaint();
-        parentPanel.revalidate();
-        this.revalidate();
-        this.repaint();
+//        clearTableCell(colunm, row);
+//        BufferedImage casa = this.canvas[colunm][row];
+//        Graphics2D g = casa.createGraphics();
+//        g.setColor(Color.RED);
+//        g.drawOval(0, 0, casa.getWidth(), casa.getHeight());
+//        g.dispose();
+
     }
     
 
