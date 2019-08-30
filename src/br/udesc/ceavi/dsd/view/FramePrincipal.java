@@ -181,7 +181,7 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         cons.gridy = 3;
         cons.gridwidth = 3;
         cons.fill = GridBagConstraints.NONE;
-        lbNumCarrosSimulacao = new JLabel("10000");
+        lbNumCarrosSimulacao = new JLabel("   ");
         jPConfingII.add(lbNumCarrosSimulacao, cons);
         initTableFrame();
     }
@@ -205,6 +205,7 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
 
     public void initTableFrame() {
         jpTable.removeAll();
+        jsNumCarro.setModel(new SpinnerNumberModel(1, 1, controller.getMalhaController().getNumCasasValida(), 1));
         jpTable.setLayout(new BoxLayout(jpTable, BoxLayout.PAGE_AXIS));
         table = new MalhaTable(jpTable);
         JScrollPane pane = new JScrollPane();
@@ -226,6 +227,10 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
     }
 
     private void btnStartListeners() {
+        jsNumCarro.setEnabled(false);
+        int numeroCarro = (int) jsNumCarro.getValue();
+        System.out.println(numeroCarro);
+        controller.startSimulation(1);
     }
 
     private void btnCarregarNovaMatrizListeners() {

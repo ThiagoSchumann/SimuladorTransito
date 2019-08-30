@@ -1,6 +1,6 @@
 package br.udesc.ceavi.dsd.model.carro;
 
-import br.udesc.ceavi.dsd.model.casa.Casa;
+import br.udesc.ceavi.dsd.model.casa.ICasa;
 
 /**
  *
@@ -13,17 +13,12 @@ public class CarroMonitor extends Carro {
     }
 
     @Override
-    public void validar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public void mover() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void setCasa(Casa newCasa) {
+    public void enterSimulation(ICasa casaAleatoria) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

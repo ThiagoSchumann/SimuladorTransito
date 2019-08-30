@@ -1,7 +1,7 @@
 package br.udesc.ceavi.dsd.abstractfactory;
 
-import br.udesc.ceavi.dsd.model.carro.Carro;
-import br.udesc.ceavi.dsd.model.casa.Casa;
+import br.udesc.ceavi.dsd.model.carro.ICarro;
+import br.udesc.ceavi.dsd.model.casa.ICasa;
 
 /**
  *
@@ -9,7 +9,7 @@ import br.udesc.ceavi.dsd.model.casa.Casa;
  */
 public interface AbstractFactory {
 
-    public Carro createCarro();
+    public ICarro createCarro();
 
-    public Casa createCasa(int valor, int colunm, int row);
+    public ICasa createCasa(int valor, int colunm, int row);
 }

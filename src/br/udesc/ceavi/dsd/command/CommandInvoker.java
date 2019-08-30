@@ -14,7 +14,6 @@ public class CommandInvoker {
     }
     
     public void execute(Command command) {
-        command.execute();
-        command.setCarro(null);
+        command.executar();
     }
 }

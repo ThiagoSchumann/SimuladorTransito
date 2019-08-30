@@ -2,8 +2,8 @@ package br.udesc.ceavi.dsd.abstractfactory;
 
 import br.udesc.ceavi.dsd.model.casa.CasaMonitor;
 import br.udesc.ceavi.dsd.model.carro.CarroMonitor;
-import br.udesc.ceavi.dsd.model.carro.Carro;
-import br.udesc.ceavi.dsd.model.casa.Casa;
+import br.udesc.ceavi.dsd.model.carro.ICarro;
+import br.udesc.ceavi.dsd.model.casa.ICasa;
 
 /**
  *
@@ -13,12 +13,12 @@ import br.udesc.ceavi.dsd.model.casa.Casa;
 public class FactoryMonitor implements AbstractFactory{
 
     @Override
-    public Carro createCarro() {
+    public ICarro createCarro() {
         return new CarroMonitor();
     }
 
     @Override
-    public Casa createCasa(int valor, int colunm, int row) {
+    public ICasa createCasa(int valor, int colunm, int row) {
         return new CasaMonitor(valor,colunm,row);
     }
 

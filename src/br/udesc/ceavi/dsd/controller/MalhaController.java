@@ -2,8 +2,10 @@ package br.udesc.ceavi.dsd.controller;
 
 import br.udesc.ceavi.dsd.abstractfactory.AbstractFactory;
 import br.udesc.ceavi.dsd.model.casa.Casa;
+import br.udesc.ceavi.dsd.model.casa.ICasa;
 import br.udesc.ceavi.dsd.view.TableObserver;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,10 +17,10 @@ public class MalhaController {
 
     private int[][] matrix;
     private int numCasasValida;
-    private Casa[][] matrixCasa;
+    private ICasa[][] matrixCasa;
 
-    private List<Casa> casasRespawn;
-    private List<Casa> casasDeath;
+    private List<ICasa> casasRespawn;
+    private List<ICasa> casasDeath;
 
     private List<TableObserver> observers;
 
@@ -57,7 +59,8 @@ public class MalhaController {
         for (int row = 0; row < matrix[0].length; row++) {
             for (int coluna = 0; coluna < matrix.length; coluna++) {
                 matrixCasa[coluna][row] = factory.createCasa(matrix[coluna][row], coluna, row);
-                if (matrixCasa[coluna][row].getValor() != 0) {
+                int valor = matrixCasa[coluna][row].getValor();
+                if (valor == 1 || valor == 2 || valor == 3 || valor == 4) {
                     numCasasValida++;
                 }
             }
@@ -141,10 +144,10 @@ public class MalhaController {
 
     public void drawExpecialCasa() {
         for (TableObserver observer : observers) {
-            for (Casa casa : casasRespawn) {
+            for (ICasa casa : casasRespawn) {
                 observer.drawRespawn(casa.getColunm(), casa.getRow());
             }
-            for (Casa casa : casasDeath) {
+            for (ICasa casa : casasDeath) {
                 observer.drawDeath(casa.getColunm(), casa.getRow());
             }
         }
@@ -157,5 +160,22 @@ public class MalhaController {
     public void removeObservers() {
         observers.clear();
     }
-    
+
+    public ICasa getCasaAleatoria() {
+        Collections.shuffle(casasRespawn);
+        return casasRespawn.get(SystemController.getInstance().getRandom().nextInt(casasRespawn.size() - 1));
+    }
+
+    public void clearCasa(int colunm, int row) {
+        for (TableObserver observer : observers) {
+            observer.clearTableCell(colunm, row);
+        }
+    }
+
+    public void printCasaCarro(int color, int colunm, int row) {
+        for (TableObserver observer : observers) {
+            observer.printCarro(color, colunm, row);
+        }
+    }
+
 }

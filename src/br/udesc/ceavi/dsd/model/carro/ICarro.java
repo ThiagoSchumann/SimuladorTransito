@@ -1,22 +1,30 @@
 package br.udesc.ceavi.dsd.model.carro;
 
-import br.udesc.ceavi.dsd.model.casa.Casa;
+import br.udesc.ceavi.dsd.model.casa.ICasa;
 
 /**
  *
- * @author Gustavo C. Santos 27/08/2019
+ * @author Gustavo C. Santos 29/08/2019
  */
 public interface ICarro {
 
-    public void desativar();
+    void desativar();
 
-    public int getRBG();
-    
-    public void getRota();
-    
-    public void validar();
-    
-    public void mover();
-    
-    public void setCasa(Casa newCasa);
+    void enterSimulation(ICasa casaAleatoria);
+
+    @Override
+    boolean equals(Object obj);
+
+    int getRBG();
+
+    void getRota();
+
+    void mover();
+
+    void setCasa(ICasa newCasa);
+
+    public ICasa getCasa();
+
+    public void sleep(int tempo) throws InterruptedException;
+
 }

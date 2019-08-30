@@ -1,7 +1,5 @@
 package br.udesc.ceavi.dsd.view;
 
-import java.awt.Color;
-
 /**
  *
  * @author Gustavo C. Santos
@@ -9,7 +7,7 @@ import java.awt.Color;
  */
 public interface TableObserver {
 
-    public void printCarro(Color cor, int colunm,int row);
+    public void printCarro(int cor, int colunm,int row);
     
     public void clearTableCell(int colunm,int row);
 

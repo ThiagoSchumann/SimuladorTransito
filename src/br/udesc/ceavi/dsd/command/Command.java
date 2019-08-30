@@ -9,7 +9,6 @@ import br.udesc.ceavi.dsd.model.carro.Carro;
  */
 public interface Command {
 
-    public void execute();
-    
-    public void setCarro(Carro carro);
+    public void executar();
+
 }
