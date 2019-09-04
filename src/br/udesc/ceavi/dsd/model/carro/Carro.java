@@ -66,10 +66,10 @@ public class Carro extends Thread implements ICarro {
         return casa;
     }
 
-    @Override
-    public void sleep(int tempo) throws InterruptedException {
-        Thread.sleep(tempo);
-    }
+//    @Override
+//    public void sleep(int tempo) throws InterruptedException {
+//        Thread.sleep(tempo);
+//    }
 
     @Override
     public void enterSimulation(ICasa casaAleatoria) {

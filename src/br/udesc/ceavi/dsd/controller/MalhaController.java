@@ -161,21 +161,37 @@ public class MalhaController {
                     ICasa origem = matrixCasa[coluna][linha];
                     if (!casasDeath.contains(origem)) {
                         switch (matrixCasa[coluna][linha].getValor()) {
-                            case 1:                                
+                            case 1:
                                 destino = matrixCasa[coluna][linha - 1];
-                                origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                if (isCruzamento(destino)) {
+                                    construirCaminhoCruzamenteo(origem);
+                                } else {
+                                    origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                }
                                 break;
                             case 2:
                                 destino = matrixCasa[coluna + 1][linha];
-                                origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                if (isCruzamento(destino)) {
+                                    construirCaminhoCruzamenteo(origem);
+                                } else {
+                                    origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                }
                                 break;
                             case 3:
                                 destino = matrixCasa[coluna][linha + 1];
-                                origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                if (isCruzamento(destino)) {
+                                    construirCaminhoCruzamenteo(origem);
+                                } else {
+                                    origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                }
                                 break;
                             case 4:
                                 destino = matrixCasa[coluna - 1][linha];
-                                origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                if (isCruzamento(destino)) {
+                                    construirCaminhoCruzamenteo(origem);
+                                } else {
+                                    origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                }
                                 break;
                             default:
                                 origem.addRota(new MatarCarroCommand(origem));
@@ -185,6 +201,11 @@ public class MalhaController {
                 }
             }
         }
+    }
+
+    public boolean isCruzamento(ICasa casa) {
+        int valor = casa.getValor();
+        return !(valor == 1 || valor == 2 || valor == 3 || valor == 4);
     }
 
     public void drawExpecialCasa() {
@@ -223,4 +244,83 @@ public class MalhaController {
         }
     }
 
+    private void construirCaminhoCruzamenteo(ICasa origem) {
+        ICasa saida1;
+        ICasa saida2;
+        ICasa saida3;
+        switch (origem.getValor()) {
+            case 1:
+                //Entrada 1
+                saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() - 1];
+                if (!isValidHouse(saida1)) {
+                    System.out.println(saida1 + " nao é uma casa valida");
+                }
+                //Entrada 2
+                saida2 = matrixCasa[origem.getColunm()][origem.getRow() - 3];
+                if (!isValidHouse(saida2)) {
+                    System.out.println(saida2 + " nao é uma casa valida");
+                }
+                //Entrada 3
+                saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() - 2];
+                if (!isValidHouse(saida3)) {
+                    System.out.println(saida3 + " nao é uma casa valida");
+                }
+                break;
+            case 2:
+                //Entrada 1
+                saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() + 1];
+                if (!isValidHouse(saida1)) {
+                    System.out.println(saida1 + " nao é uma casa valida");
+                }
+                //Entrada 2
+                saida2 = matrixCasa[origem.getColunm() + 3][origem.getRow()];
+                if (!isValidHouse(saida2)) {
+                    System.out.println(saida2 + " nao é uma casa valida");
+                }
+                //Entrada 3
+                saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() - 2];
+                if (!isValidHouse(saida3)) {
+                    System.out.println(saida3 + " nao é uma casa valida");
+                }
+                break;
+            case 3:
+                //Entrada 1
+                saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() + 1];
+                if (!isValidHouse(saida1)) {
+                    System.out.println(saida1 + " nao é uma casa valida");
+                }
+                //Entrada 2
+                saida2 = matrixCasa[origem.getColunm()][origem.getRow() + 3];
+                if (!isValidHouse(saida2)) {
+                    System.out.println(saida2 + " nao é uma casa valida");
+                }
+                //Entrada 3
+                saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() + 2];
+                if (!isValidHouse(saida3)) {
+                    System.out.println(saida3 + " nao é uma casa valida");
+                }
+                break;
+            case 4:
+                //Entrada 1
+                saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() - 1];
+                if (!isValidHouse(saida1)) {
+                    System.out.println(saida1 + " nao é uma casa valida");
+                }
+                //Entrada 2
+                saida2 = matrixCasa[origem.getColunm() - 3][origem.getRow()];
+                if (!isValidHouse(saida2)) {
+                    System.out.println(saida2 + " nao é uma casa valida");
+                }
+                //Entrada 3
+                saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() + 2];
+                if (!isValidHouse(saida3)) {
+                    System.out.println(saida3 + " nao é uma casa valida");
+                }
+                break;
+        }
+    }
+
+    public boolean isValidHouse(ICasa casa) {
+        return casa.getValor() != 0;
+    }
 }

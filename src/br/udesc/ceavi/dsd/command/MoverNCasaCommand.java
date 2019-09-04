@@ -50,12 +50,12 @@ public class MoverNCasaCommand implements Command {
                 }
             }
             try {
-                origem.getCarro().sleep(SystemController.getInstance().getRandom().nextInt(1000));
+                ((Thread) origem.getCarro()).sleep(SystemController.getInstance().getRandom().nextInt(1000));
             } catch (InterruptedException ex) {
                 Logger.getLogger(MoverNCasaCommand.class.getName()).log(Level.SEVERE, null, ex);
             }
         } while (!liberado);
-        
+
         casaLivres.add(0, origem);
         ICarro carro = null;
         for (int i = 0; i < casaLivres.size() - 1; i++) {
@@ -73,7 +73,7 @@ public class MoverNCasaCommand implements Command {
             if (!(i < casaLivres.size() - 1)) {
                 //Esperando um pouco
                 try {
-                    carro.sleep(50);
+                    ((Thread) carro).sleep(50);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MoverNCasaCommand.class.getName()).log(Level.SEVERE, null, ex);
                 }

@@ -4,6 +4,8 @@ import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.carro.Carro;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,13 +25,7 @@ public class EntraNaMalhaCommand implements Command {
     @Override
     public void executar() {
         SystemController system = SystemController.getInstance();
-        do {
-            if (casa.reservarCasa()) {
-                casa.setCarro(carro);
-                carro.setCasa(casa);
-                casa.repintar();
-            }
-        } while (carro.getCasa() == null);
+        casa.mover(carro);
         casa.repintar();
         system.notificarEntreiNaMalha(carro);
     }

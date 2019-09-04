@@ -25,8 +25,9 @@ public interface ICarro {
 
     public ICasa getCasa();
 
-    public void sleep(int tempo) throws InterruptedException;
 
     public long getId();
+
+    public void join() throws InterruptedException;
 
 }

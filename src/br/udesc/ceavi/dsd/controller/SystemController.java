@@ -10,12 +10,10 @@ import br.udesc.ceavi.dsd.model.carro.Carro;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
 import br.udesc.ceavi.dsd.view.FramePrincipalObserver;
 import java.io.FileNotFoundException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -160,6 +158,14 @@ public class SystemController {
             }
             try {
                 Thread.sleep(150);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        carrosEmEspera.values().parallelStream().forEach(carroEmpera -> carroEmpera.desativar());
+        for (ICarro carro : carrosEmMalha.values()) {
+            try {
+                carro.join();
             } catch (InterruptedException ex) {
                 Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
             }
