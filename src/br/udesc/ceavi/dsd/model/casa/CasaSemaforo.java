@@ -24,10 +24,10 @@ public class CasaSemaforo extends Casa {
     public void mover(ICarro carro) {
         try {
             mutex.acquire();
-            ICasa casaAnterior = carro.getCasa();
-            if (casaAnterior != null) {
-                casaAnterior.setCarro(null);
-            }
+//            ICasa casaAnterior = carro.getCasa();
+//            if (casaAnterior != null) {
+//                casaAnterior.setCarro(null);
+//            }
             carro.setCasa(this);
             setCarro(carro);
         } catch (InterruptedException ex) {

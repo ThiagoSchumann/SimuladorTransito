@@ -1,6 +1,9 @@
 package br.udesc.ceavi.dsd.controller;
 
 import br.udesc.ceavi.dsd.abstractfactory.AbstractFactory;
+import br.udesc.ceavi.dsd.command.Command;
+import br.udesc.ceavi.dsd.command.MatarCarroCommand;
+import br.udesc.ceavi.dsd.command.MoverUmaCasaCommand;
 import br.udesc.ceavi.dsd.model.casa.Casa;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
 import br.udesc.ceavi.dsd.view.TableObserver;
@@ -36,6 +39,7 @@ public class MalhaController {
     public void initMalha() {
         initCasas();
         setExtremidadeCasa();
+        setCommands();
     }
 
     public void anexar(TableObserver observer) {
@@ -142,6 +146,47 @@ public class MalhaController {
         }
     }
 
+    public void setCommands() {
+        //Adicionar os commands dentro da casa
+        //Add Pontos de Morte
+        for (ICasa iCasa : casasDeath) {
+            iCasa.addRota(new MatarCarroCommand(iCasa));
+        }
+        //Agora percorre a estrutura para encontrar as possíveis rotas de cada casa
+        for (int linha = 0; linha < getRow(); linha++) {
+            for (int coluna = 0; coluna < getColumn(); coluna++) {
+                //Se houver valor na casa significa que a mesma faz parte da malha
+                if (matrixCasa[coluna][linha].getValor() != 0) {
+                    ICasa destino;
+                    ICasa origem = matrixCasa[coluna][linha];
+                    if (!casasDeath.contains(origem)) {
+                        switch (matrixCasa[coluna][linha].getValor()) {
+                            case 1:                                
+                                destino = matrixCasa[coluna][linha - 1];
+                                origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                break;
+                            case 2:
+                                destino = matrixCasa[coluna + 1][linha];
+                                origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                break;
+                            case 3:
+                                destino = matrixCasa[coluna][linha + 1];
+                                origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                break;
+                            case 4:
+                                destino = matrixCasa[coluna - 1][linha];
+                                origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                break;
+                            default:
+                                origem.addRota(new MatarCarroCommand(origem));
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public void drawExpecialCasa() {
         for (TableObserver observer : observers) {
             for (ICasa casa : casasRespawn) {
@@ -177,6 +222,5 @@ public class MalhaController {
             observer.printCarro(color, colunm, row);
         }
     }
-
 
 }

@@ -12,9 +12,14 @@ public class MoverUmaCasaCommand implements Command {
     private ICasa origem;
     private ICasa destino;
 
+    public MoverUmaCasaCommand(ICasa origem, ICasa destino) {
+        this.origem = origem;
+        this.destino = destino;
+    }
+
     @Override
     public void executar() {
-        destino.mover(destino.getCarro());
+        destino.mover(origem.getCarro());
         origem.setCarro(null);
         origem.liberarRecurso();
         origem.repintar();

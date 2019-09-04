@@ -87,26 +87,19 @@ public class Carro extends Thread implements ICarro {
     @Override
     public void run() {
         mover();
-        try {
-            Thread.sleep(systemController.getRandom().nextInt(10000));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
-        }
         
-        rota = new MatarCarroCommand(getCasa());
-        mover();
-//        le (ativo) {
-//            obterRota();
-//            if (rota == null) {
-//                break;
-//            }
-//            mover();
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
+        while (ativo) {
+            obterRota();
+            if (rota == null) {
+                break;
+            }
+            mover();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
 }
