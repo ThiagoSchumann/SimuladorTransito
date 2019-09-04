@@ -7,4 +7,8 @@ package br.udesc.ceavi.dsd.view;
 public interface FramePrincipalObserver {
 
     public void notificarNumeroDeCarro(int numCarro);
+
+    public void notificarSimulacaoFinalizada();
+
+    public void notificarRepawnEnd();
 }

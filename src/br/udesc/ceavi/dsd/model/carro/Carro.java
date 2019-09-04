@@ -21,11 +21,13 @@ public class Carro extends Thread implements ICarro {
     private Command rota;
     private SystemController systemController;
     private Random random;
+    private int velocidade;
 
     public Carro() {
         this.random = new Random();
         this.systemController = SystemController.getInstance();
         this.ativo = true;
+        this.velocidade = random.nextInt(1000);
         this.rgb = Image.gerarRGB();
     }
 
@@ -98,6 +100,11 @@ public class Carro extends Thread implements ICarro {
     @Override
     public void run() {
         mover();
+        try {
+            Thread.sleep(velocidade);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         while (ativo) {
             obterRota();
@@ -106,7 +113,7 @@ public class Carro extends Thread implements ICarro {
             }
             mover();
             try {
-                Thread.sleep(random.nextInt(1000));
+                Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
             }

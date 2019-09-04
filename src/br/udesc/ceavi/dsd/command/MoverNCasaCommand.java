@@ -56,8 +56,9 @@ public class MoverNCasaCommand implements Command {
             }
         } while (!liberado);
 
-        casaLivres.add(0, origem);
-        ICarro carro = null;
+
+        ICarro carro = origem.removerCarro();
+        origem.repintar();
         for (int i = 0; i < casaLivres.size() - 1; i++) {
             //saindo da casa
             ICasa casaAtual = casaLivres.get(i);
@@ -79,7 +80,11 @@ public class MoverNCasaCommand implements Command {
                 }
             }
         }
+        
         carro.setCasa(destino);
+        destino.setCarro(carro);
+        casaLivres.clear();
+        origem.liberarRecurso();
     }
 
     /**

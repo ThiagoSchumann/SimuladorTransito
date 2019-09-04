@@ -21,9 +21,9 @@ public class MoverUmaCasaCommand implements Command {
     public void executar() {
         destino.mover(origem.getCarro());
         origem.setCarro(null);
-        origem.liberarRecurso();
         origem.repintar();
         destino.repintar();
+        origem.liberarRecurso();
     }
 
 }

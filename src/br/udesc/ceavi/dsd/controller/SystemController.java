@@ -8,6 +8,7 @@ import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.command.CommandInvoker;
 import br.udesc.ceavi.dsd.model.carro.Carro;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
+import br.udesc.ceavi.dsd.model.casa.ICasa;
 import br.udesc.ceavi.dsd.view.FramePrincipalObserver;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -38,7 +39,6 @@ public class SystemController {
 
     private AbstractFactory factory;
 
-    private int numeroDeCarroNaSimulacao;
     private int numeroDeCarroObjetivo;
 
     private boolean simulationAtivo;
@@ -55,7 +55,6 @@ public class SystemController {
         this.carrosEmMalha = new HashMap<>();
         this.carrosEmEspera = new HashMap<>();
         this.simulationAtivo = false;
-        this.numeroDeCarroNaSimulacao = 0;
         this.observers = new ArrayList<>();
     }
 
@@ -141,7 +140,6 @@ public class SystemController {
         commandInvoker.execute(command);
     }
 
-    //Melhorar Logica
     public void notificarCarroMorto(ICarro carro) {
         carrosEmMalha.remove(carro.getId());
         SwingUtilities.invokeLater(() -> observers.forEach((observer) -> observer.notificarNumeroDeCarro(carrosEmMalha.size())));
@@ -151,6 +149,7 @@ public class SystemController {
         this.observers.add(aThis);
     }
 
+    //Runneable
     private void addAutomatico() {
         while (simulationAtivo) {
             for (int i = (carrosEmEspera.size() + carrosEmMalha.size()); i < numeroDeCarroObjetivo; i++) {
@@ -162,13 +161,30 @@ public class SystemController {
                 Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+
+        observers.forEach(obs -> obs.notificarRepawnEnd());
         carrosEmEspera.values().parallelStream().forEach(carroEmpera -> carroEmpera.desativar());
+        carrosEmEspera.clear();
+        System.out.println("Oi");
+        observers.forEach(obs -> obs.notificarSimulacaoFinalizada());
+    }
+
+    public void pararRepawn() {
+        simulationAtivo = false;
+    }
+
+    public void matarCarros() {
         for (ICarro carro : carrosEmMalha.values()) {
-            try {
-                carro.join();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            carro.desativar();
+            ICasa casa = carro.getCasa();
+            carro.setCasa(null);
+            casa.setCarro(null);
+            casa.repintar();
         }
+        carrosEmMalha.clear();
+        observers.forEach(obs -> {
+            obs.notificarSimulacaoFinalizada();
+            obs.notificarNumeroDeCarro(carrosEmMalha.size());
+        });
     }
 }

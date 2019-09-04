@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 /**
@@ -203,6 +204,7 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         this.btnStart.addActionListener((e) -> btnStartListeners());
         this.btnStop.addActionListener((e) -> btnStopListeners());
         this.btnCarregarNovaMatriz.addActionListener((e) -> btnCarregarNovaMatrizListeners());
+        this.btnLimparMatriz.addActionListener((e) -> btnLimparMatrizListeners());
     }
 
     public void initTableFrame() {
@@ -225,7 +227,27 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         jpTable.revalidate();
     }
 
+    @Override
+    public void notificarSimulacaoFinalizada() {
+        btnCarregarNovaMatriz.setEnabled(true);
+        btnLimparMatriz.setEnabled(false);
+    }
+
+    @Override
+    public void notificarRepawnEnd() {
+        btnLimparMatriz.setEnabled(true);
+    }
+
+    private void btnLimparMatrizListeners() {
+        controller.matarCarros();
+        btnLimparMatriz.setEnabled(false);
+        btnStart.setEnabled(true);
+        jsNumCarro.setEnabled(true);
+    }
+
     private void btnStopListeners() {
+        btnStop.setEnabled(false);
+        controller.pararRepawn();
     }
 
     private void btnStartListeners() {
@@ -234,9 +256,9 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         btnStop.setEnabled(true);
         btnLimparMatriz.setEnabled(false);
         btnCarregarNovaMatriz.setEnabled(false);
-        
+
         int numeroCarro = (int) jsNumCarro.getValue();
-        
+
         System.out.println(numeroCarro);
         controller.startSimulation(numeroCarro);
     }
@@ -246,4 +268,5 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
             new FrameConfig(this).setVisible(true);
         });
     }
+
 }

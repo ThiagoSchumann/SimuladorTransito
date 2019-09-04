@@ -3,11 +3,13 @@ package br.udesc.ceavi.dsd.controller;
 import br.udesc.ceavi.dsd.abstractfactory.AbstractFactory;
 import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.command.MatarCarroCommand;
+import br.udesc.ceavi.dsd.command.MoverNCasaCommand;
 import br.udesc.ceavi.dsd.command.MoverUmaCasaCommand;
 import br.udesc.ceavi.dsd.model.casa.Casa;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
 import br.udesc.ceavi.dsd.view.TableObserver;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -252,68 +254,68 @@ public class MalhaController {
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() - 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverUmaCasaCommand(origem, saida1));
+                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm()][origem.getRow() - 3];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverUmaCasaCommand(origem, saida2));
+                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() - 2];
                 if (isValidHouse(saida3)) {
-                    origem.addRota(new MoverUmaCasaCommand(origem, saida3));
+                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(saida3)));
                 }
                 break;
             case 2:
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() + 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverUmaCasaCommand(origem, saida1));
+                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm() + 3][origem.getRow()];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverUmaCasaCommand(origem, saida2));
+                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() - 2];
                 if (isValidHouse(saida3)) {
-                      origem.addRota(new MoverUmaCasaCommand(origem, saida3));
+                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(saida3)));
                 }
                 break;
             case 3:
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() + 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverUmaCasaCommand(origem, saida1));
+                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm()][origem.getRow() + 3];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverUmaCasaCommand(origem, saida2));
+                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() + 2];
                 if (isValidHouse(saida3)) {
-                      origem.addRota(new MoverUmaCasaCommand(origem, saida3));
+                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(saida3)));
                 }
                 break;
             case 4:
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() - 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverUmaCasaCommand(origem, saida1));
+                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm() - 3][origem.getRow()];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverUmaCasaCommand(origem, saida2));
+                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() + 2];
                 if (isValidHouse(saida3)) {
-                      origem.addRota(new MoverUmaCasaCommand(origem, saida3));
+                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(saida3)));
                 }
                 break;
         }

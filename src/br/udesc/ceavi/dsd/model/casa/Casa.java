@@ -15,9 +15,9 @@ import java.util.Random;
 public abstract class Casa implements ICasa {
 
     protected ICarro carro;
-    private int colunm, row;
-    private int valor;
-    private Random random;
+    protected int colunm, row;
+    protected int valor;
+    protected Random random;
     protected List<Command> movimentacoes;
 
     public Casa(int valor, int colunm, int row) {

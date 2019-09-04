@@ -1,5 +1,6 @@
 package br.udesc.ceavi.dsd.model.casa;
 
+import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +39,7 @@ public class CasaSemaforo extends Casa {
     @Override
     public boolean reservarCasa() {
         try {
-            return mutex.tryAcquire(15, TimeUnit.MILLISECONDS);
+            return mutex.tryAcquire(50, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ex) {
             Logger.getLogger(CasaSemaforo.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -50,4 +51,12 @@ public class CasaSemaforo extends Casa {
         mutex.release();
     }
 
+    @Override
+    public Command getRota() {
+        if (movimentacoes.size() > 1) {
+            return movimentacoes.get(random.nextInt(movimentacoes.size()));
+        } else {
+            return movimentacoes.get(0);
+        }
+    }
 }
