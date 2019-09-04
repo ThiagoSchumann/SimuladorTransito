@@ -12,7 +12,9 @@ import br.udesc.ceavi.dsd.view.FramePrincipalObserver;
 import java.io.FileNotFoundException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Random;
 import java.util.logging.Level;
@@ -45,15 +47,15 @@ public class SystemController {
 
     private Random random = new Random();
 
-    private Queue<ICarro> carrosEmEspera;
-    private List<ICarro> carrosEmMalha;
+    private Map<Long, ICarro> carrosEmEspera;
+    private Map<Long, ICarro> carrosEmMalha;
     private CommandInvoker commandInvoker;
     private List<FramePrincipalObserver> observers;
 
     private SystemController() {
         this.commandInvoker = new CommandInvoker();
-        this.carrosEmMalha = new ArrayList<>();
-        this.carrosEmEspera = new ArrayDeque<>();
+        this.carrosEmMalha = new HashMap<>();
+        this.carrosEmEspera = new HashMap<>();
         this.simulationAtivo = false;
         this.numeroDeCarroNaSimulacao = 0;
         this.observers = new ArrayList<>();
@@ -113,27 +115,23 @@ public class SystemController {
     public void startSimulation(int numeroCarro) {
         this.numeroDeCarroObjetivo = numeroCarro;
         this.simulationAtivo = true;
-        new Thread(() -> newCarroEmMalha()).start();
+        for (int i = 0; i < numeroDeCarroObjetivo; i++) {
+            newCarroEmMalha();
+        }
+        Thread respawn = new Thread(() -> addAutomatico());
+        respawn.setPriority(Thread.MAX_PRIORITY);
+        respawn.start();
     }
 
     private void newCarroEmMalha() {
-        while (true) {
-            for (int i = carrosEmMalha.size(); i < numeroDeCarroObjetivo; i++) {
-                Carro carro = new Carro();
-                carro.enterSimulation(malhaController.getRespawnAleatorio());
-                try {
-                    System.out.println("Tamanho da Lista : " + carrosEmMalha.size());
-                    System.out.println("I: " + i);
-                    Thread.sleep(500);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+        Carro carro = new Carro();
+        carrosEmEspera.put(carro.getId(), carro);
+        carro.enterSimulation(malhaController.getRespawnAleatorio());
     }
 
     public void notificarEntreiNaMalha(ICarro carro) {
-        carrosEmMalha.add(carro);
+        carrosEmEspera.remove(carro.getId());
+        carrosEmMalha.put(carro.getId(), carro);
         SwingUtilities.invokeLater(() -> observers.forEach((observer) -> observer.notificarNumeroDeCarro(carrosEmMalha.size())));
     }
 
@@ -147,11 +145,24 @@ public class SystemController {
 
     //Melhorar Logica
     public void notificarCarroMorto(ICarro carro) {
-        carrosEmMalha.remove(carro);
+        carrosEmMalha.remove(carro.getId());
         SwingUtilities.invokeLater(() -> observers.forEach((observer) -> observer.notificarNumeroDeCarro(carrosEmMalha.size())));
     }
 
     public void addObserver(FramePrincipalObserver aThis) {
         this.observers.add(aThis);
+    }
+
+    private void addAutomatico() {
+        while (simulationAtivo) {
+            for (int i = (carrosEmEspera.size() + carrosEmMalha.size()); i < numeroDeCarroObjetivo; i++) {
+                newCarroEmMalha();
+            }
+            try {
+                Thread.sleep(150);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

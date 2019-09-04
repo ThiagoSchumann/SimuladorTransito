@@ -2,7 +2,6 @@ package br.udesc.ceavi.dsd.model.carro;
 
 import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.command.EntraNaMalhaCommand;
-import br.udesc.ceavi.dsd.command.MatarCarroCommand;
 import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
 import br.udesc.ceavi.dsd.util.Image;
@@ -95,7 +94,7 @@ public class Carro extends Thread implements ICarro {
             }
             mover();
             try {
-                Thread.sleep(500);
+                Thread.sleep(systemController.getRandom().nextInt(500));
             } catch (InterruptedException ex) {
                 Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
             }

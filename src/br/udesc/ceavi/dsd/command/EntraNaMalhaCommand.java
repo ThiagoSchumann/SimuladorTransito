@@ -28,8 +28,6 @@ public class EntraNaMalhaCommand implements Command {
                 casa.setCarro(carro);
                 carro.setCasa(casa);
                 casa.repintar();
-            } else {
-                casa = system.getMalhaController().getRespawnAleatorio();
             }
         } while (carro.getCasa() == null);
         casa.repintar();

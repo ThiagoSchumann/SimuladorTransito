@@ -22,7 +22,7 @@ public class CasaMonitor extends Casa {
     }
 
     @Override
-    public synchronized void mover(ICarro carro) {
+    public void mover(ICarro carro) {
         lock.lock();
         ICasa casaAnterior = carro.getCasa();
         if (casaAnterior != null){
@@ -33,8 +33,8 @@ public class CasaMonitor extends Casa {
     }
 
     @Override
-    public synchronized void liberarRecurso() {
-        notify();
+    public  void liberarRecurso() {
+        lock.unlock();
     }
 
     //Necessita do Lock
