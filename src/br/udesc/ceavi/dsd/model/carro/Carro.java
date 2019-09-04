@@ -5,6 +5,7 @@ import br.udesc.ceavi.dsd.command.EntraNaMalhaCommand;
 import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
 import br.udesc.ceavi.dsd.util.Image;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,8 +20,10 @@ public class Carro extends Thread implements ICarro {
     private ICasa casa;
     private Command rota;
     private SystemController systemController;
+    private Random random;
 
     public Carro() {
+        this.random = new Random();
         this.systemController = SystemController.getInstance();
         this.ativo = true;
         this.rgb = Image.gerarRGB();
@@ -66,10 +69,14 @@ public class Carro extends Thread implements ICarro {
         return casa;
     }
 
-//    @Override
-//    public void sleep(int tempo) throws InterruptedException {
-//        Thread.sleep(tempo);
-//    }
+    @Override
+    public void sleep(int tempo) {
+        try {
+            Thread.sleep(tempo);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public void enterSimulation(ICasa casaAleatoria) {
@@ -79,14 +86,19 @@ public class Carro extends Thread implements ICarro {
 
     @Override
     public void mover() {
-        SystemController.getInstance().execute(rota);
+        rota.executar();
         rota = null;
+    }
+
+    @Override
+    public Random getRandom() {
+        return random;
     }
 
     @Override
     public void run() {
         mover();
-        
+
         while (ativo) {
             obterRota();
             if (rota == null) {
@@ -94,7 +106,7 @@ public class Carro extends Thread implements ICarro {
             }
             mover();
             try {
-                Thread.sleep(systemController.getRandom().nextInt(2500));
+                Thread.sleep(random.nextInt(1000));
             } catch (InterruptedException ex) {
                 Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -1,6 +1,7 @@
 package br.udesc.ceavi.dsd.model.carro;
 
 import br.udesc.ceavi.dsd.model.casa.ICasa;
+import java.util.Random;
 
 /**
  *
@@ -25,9 +26,12 @@ public interface ICarro {
 
     public ICasa getCasa();
 
-
     public long getId();
 
     public void join() throws InterruptedException;
+
+    public Random getRandom();
+
+    public void sleep(int nextInt);
 
 }

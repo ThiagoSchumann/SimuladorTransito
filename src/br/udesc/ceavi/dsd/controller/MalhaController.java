@@ -228,8 +228,7 @@ public class MalhaController {
     }
 
     public ICasa getRespawnAleatorio() {
-        Collections.shuffle(casasRespawn);
-        return casasRespawn.get(SystemController.getInstance().getRandom().nextInt(casasRespawn.size() - 1));
+        return casasRespawn.get(SystemController.getInstance().getRandom().nextInt(casasRespawn.size()));
     }
 
     public void clearCasa(int colunm, int row) {

@@ -4,9 +4,8 @@ import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import javax.swing.SwingUtilities;
+import java.util.Random;
 
 /**
  *
@@ -18,7 +17,7 @@ public abstract class Casa implements ICasa {
     protected ICarro carro;
     private int colunm, row;
     private int valor;
-
+    private Random random;
     protected List<Command> movimentacoes;
 
     public Casa(int valor, int colunm, int row) {
@@ -30,15 +29,19 @@ public abstract class Casa implements ICasa {
 
     @Override
     public void addRota(Command command) {
+        if (!movimentacoes.isEmpty()) {
+            this.random = new Random();
+        }
         movimentacoes.add(command);
     }
 
     @Override
     public Command getRota() {
-        if (movimentacoes.size() != 1) {
-            Collections.shuffle(movimentacoes);
+        if (movimentacoes.size() > 1) {
+            return movimentacoes.get(random.nextInt(movimentacoes.size()));
+        } else {
+            return movimentacoes.get(0);
         }
-        return movimentacoes.get(0);
     }
 
     @Override
@@ -114,6 +117,5 @@ public abstract class Casa implements ICasa {
         }
         return true;
     }
-    
 
 }

@@ -41,7 +41,7 @@ public class CasaMonitor extends Casa {
     @Override
     public boolean reservarCasa() {
         try {
-            return lock.tryLock(75, TimeUnit.MILLISECONDS);
+            return lock.tryLock(15, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ex) {
             Logger.getLogger(CasaMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }

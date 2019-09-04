@@ -10,15 +10,12 @@ import java.util.List;
  */
 public class CommandInvoker {
 
-    private List<Command> commands;
 
     public CommandInvoker() {
         super();
-        this.commands = new ArrayList<>();
     }
 
     public void execute(Command command) {
         command.executar();
-        commands.add(command);
     }
 }
