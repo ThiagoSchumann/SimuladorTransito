@@ -252,69 +252,69 @@ public class MalhaController {
             case 1:
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() - 1];
-                if (!isValidHouse(saida1)) {
-                    System.out.println(saida1 + " nao é uma casa valida");
+                if (isValidHouse(saida1)) {
+                    origem.addRota(new MoverUmaCasaCommand(origem, saida1));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm()][origem.getRow() - 3];
-                if (!isValidHouse(saida2)) {
-                    System.out.println(saida2 + " nao é uma casa valida");
+                if (isValidHouse(saida2)) {
+                    origem.addRota(new MoverUmaCasaCommand(origem, saida2));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() - 2];
-                if (!isValidHouse(saida3)) {
-                    System.out.println(saida3 + " nao é uma casa valida");
+                if (isValidHouse(saida3)) {
+                    origem.addRota(new MoverUmaCasaCommand(origem, saida3));
                 }
                 break;
             case 2:
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() + 1];
-                if (!isValidHouse(saida1)) {
-                    System.out.println(saida1 + " nao é uma casa valida");
+                if (isValidHouse(saida1)) {
+                    origem.addRota(new MoverUmaCasaCommand(origem, saida1));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm() + 3][origem.getRow()];
-                if (!isValidHouse(saida2)) {
-                    System.out.println(saida2 + " nao é uma casa valida");
+                if (isValidHouse(saida2)) {
+                    origem.addRota(new MoverUmaCasaCommand(origem, saida2));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() - 2];
-                if (!isValidHouse(saida3)) {
-                    System.out.println(saida3 + " nao é uma casa valida");
+                if (isValidHouse(saida3)) {
+                      origem.addRota(new MoverUmaCasaCommand(origem, saida3));
                 }
                 break;
             case 3:
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() + 1];
-                if (!isValidHouse(saida1)) {
-                    System.out.println(saida1 + " nao é uma casa valida");
+                if (isValidHouse(saida1)) {
+                    origem.addRota(new MoverUmaCasaCommand(origem, saida1));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm()][origem.getRow() + 3];
-                if (!isValidHouse(saida2)) {
-                    System.out.println(saida2 + " nao é uma casa valida");
+                if (isValidHouse(saida2)) {
+                    origem.addRota(new MoverUmaCasaCommand(origem, saida2));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() + 2];
-                if (!isValidHouse(saida3)) {
-                    System.out.println(saida3 + " nao é uma casa valida");
+                if (isValidHouse(saida3)) {
+                      origem.addRota(new MoverUmaCasaCommand(origem, saida3));
                 }
                 break;
             case 4:
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() - 1];
-                if (!isValidHouse(saida1)) {
-                    System.out.println(saida1 + " nao é uma casa valida");
+                if (isValidHouse(saida1)) {
+                    origem.addRota(new MoverUmaCasaCommand(origem, saida1));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm() - 3][origem.getRow()];
-                if (!isValidHouse(saida2)) {
-                    System.out.println(saida2 + " nao é uma casa valida");
+                if (isValidHouse(saida2)) {
+                    origem.addRota(new MoverUmaCasaCommand(origem, saida2));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() + 2];
-                if (!isValidHouse(saida3)) {
-                    System.out.println(saida3 + " nao é uma casa valida");
+                if (isValidHouse(saida3)) {
+                      origem.addRota(new MoverUmaCasaCommand(origem, saida3));
                 }
                 break;
         }

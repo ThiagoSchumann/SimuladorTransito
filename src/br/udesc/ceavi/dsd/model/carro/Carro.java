@@ -94,7 +94,7 @@ public class Carro extends Thread implements ICarro {
             }
             mover();
             try {
-                Thread.sleep(systemController.getRandom().nextInt(500));
+                Thread.sleep(systemController.getRandom().nextInt(2500));
             } catch (InterruptedException ex) {
                 Logger.getLogger(Carro.class.getName()).log(Level.SEVERE, null, ex);
             }
