@@ -23,13 +23,12 @@ public class CasaMonitor extends Casa {
 
     @Override
     public synchronized void mover(ICarro carro) {
-        if (super.getCarro() != null) {
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(CasaMonitor.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        lock.lock();
+        ICasa casaAnterior = carro.getCasa();
+        if (casaAnterior != null){
+            casaAnterior.setCarro(null);
         }
+        carro.setCasa(this);
         setCarro(carro);
     }
 
