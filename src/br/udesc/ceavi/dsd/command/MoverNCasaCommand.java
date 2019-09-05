@@ -46,6 +46,7 @@ public class MoverNCasaCommand implements Command {
 
                 } else {//Insucesso ao pegar o recurso de uma casa
                     casaLivres.forEach(casaLivre -> casaLivre.liberarRecurso()); //Liberando as que eu peguei
+                    casaLivres.clear();
                     break;
                 }
             }
@@ -56,13 +57,12 @@ public class MoverNCasaCommand implements Command {
             }
         } while (!liberado);
 
-
         ICarro carro = origem.removerCarro();
         origem.repintar();
         for (int i = 0; i < casaLivres.size() - 1; i++) {
             //saindo da casa
             ICasa casaAtual = casaLivres.get(i);
-            carro = casaAtual.removerCarro();
+            casaAtual.removerCarro();
             casaAtual.repintar();
             casaAtual.liberarRecurso();
 
@@ -74,13 +74,13 @@ public class MoverNCasaCommand implements Command {
             if (!(i < casaLivres.size() - 1)) {
                 //Esperando um pouco
                 try {
-                    ((Thread) carro).sleep(50);
+                    ((Thread) carro).sleep(600);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MoverNCasaCommand.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        
+
         carro.setCasa(destino);
         destino.setCarro(carro);
         casaLivres.clear();
