@@ -249,73 +249,92 @@ public class MalhaController {
         ICasa saida1;
         ICasa saida2;
         ICasa saida3;
+        ICasa Movimento1;
+        ICasa Movimento2;
+        ICasa Movimento3;
         switch (origem.getValor()) {
             case 1:
+                //Captura os possíveis movimentos
+                Movimento1 = matrixCasa[origem.getColunm()][origem.getRow() - 1];
+                Movimento2 = matrixCasa[origem.getColunm()][origem.getRow() - 2];
+                Movimento3 = matrixCasa[origem.getColunm() - 1][origem.getRow() - 2];
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() - 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(saida1)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(Movimento1, saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm()][origem.getRow() - 3];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(saida2)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() - 2];
                 if (isValidHouse(saida3)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(saida3)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
                 }
                 break;
             case 2:
+                //Captura os possíveis movimentos
+                Movimento1 = matrixCasa[origem.getColunm() + 1][origem.getRow()];
+                Movimento2 = matrixCasa[origem.getColunm() + 2][origem.getRow()];
+                Movimento3 = matrixCasa[origem.getColunm() + 2][origem.getRow() - 1];
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() + 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(saida1)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(Movimento1, saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm() + 3][origem.getRow()];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(saida2)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() - 2];
                 if (isValidHouse(saida3)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(saida3)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
                 }
                 break;
             case 3:
+                //Captura os possíveis movimentos
+                Movimento1 = matrixCasa[origem.getColunm()][origem.getRow() + 1];
+                Movimento2 = matrixCasa[origem.getColunm()][origem.getRow() + 2];
+                Movimento3 = matrixCasa[origem.getColunm() + 1][origem.getRow() + 2];
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() + 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(saida1)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(Movimento1, saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm()][origem.getRow() + 3];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(saida2)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() + 2];
                 if (isValidHouse(saida3)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(saida3)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
                 }
                 break;
             case 4:
+                //Captura os possíveis movimentos
+                Movimento1 = matrixCasa[origem.getColunm() - 1][origem.getRow()];
+                Movimento2 = matrixCasa[origem.getColunm() - 2][origem.getRow()];
+                Movimento3 = matrixCasa[origem.getColunm() - 2][origem.getRow() + 1];
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() - 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(saida1)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(Movimento1, saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm() - 3][origem.getRow()];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(saida2)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() + 2];
                 if (isValidHouse(saida3)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(saida3)));
+                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
                 }
                 break;
         }
