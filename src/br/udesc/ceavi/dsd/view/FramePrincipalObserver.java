@@ -10,5 +10,4 @@ public interface FramePrincipalObserver {
 
     public void notificarSimulacaoFinalizada();
 
-    public void notificarRepawnEnd();
 }

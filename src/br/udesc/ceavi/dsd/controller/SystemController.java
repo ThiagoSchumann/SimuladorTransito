@@ -6,7 +6,6 @@ import br.udesc.ceavi.dsd.abstractfactory.FactoryMonitor;
 import br.udesc.ceavi.dsd.abstractfactory.FactorySemaphore;
 import br.udesc.ceavi.dsd.model.carro.Carro;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
-import br.udesc.ceavi.dsd.model.casa.ICasa;
 import br.udesc.ceavi.dsd.view.FramePrincipalObserver;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -41,13 +40,14 @@ public class SystemController {
 
     private boolean simulationAtivo;
 
-    private Random random = new Random();
+    private Random random;
 
     private Map<Long, ICarro> carrosEmEspera;
     private Map<Long, ICarro> carrosEmMalha;
     private List<FramePrincipalObserver> observers;
 
     private SystemController() {
+        this.random = new Random();
         this.carrosEmMalha = new HashMap<>();
         this.carrosEmEspera = new HashMap<>();
         this.simulationAtivo = false;
@@ -151,13 +151,10 @@ public class SystemController {
             }
         }
 
-        carrosEmEspera.values().parallelStream().forEach(carroEmpera -> carroEmpera.desativar());
-        carrosEmEspera.clear();
-
         List<ICarro> arrayList = new ArrayList<>();
         arrayList.addAll(carrosEmMalha.values());
-        observers.forEach(obs -> obs.notificarRepawnEnd());
-        
+        arrayList.addAll(carrosEmEspera.values());
+
         arrayList.forEach((value) -> {
             try {
                 value.join();
@@ -171,21 +168,5 @@ public class SystemController {
 
     public void pararRepawn() {
         simulationAtivo = false;
-    }
-
-    public void matarCarros() {
-        for (ICarro carro : carrosEmMalha.values()) {
-            carro.desativar();
-            ICasa casa = carro.getCasa();
-            carro.setCasa(null);
-            casa.setCarro(null);
-            casa.repintar();
-        }
-        carrosEmMalha.clear();
-        observers.forEach(obs -> {
-            obs.notificarSimulacaoFinalizada();
-            obs.notificarNumeroDeCarro(carrosEmMalha.size());
-        });
-        malhaController.rebut();
     }
 }

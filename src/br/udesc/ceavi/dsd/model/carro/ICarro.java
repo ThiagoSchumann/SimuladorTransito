@@ -1,7 +1,6 @@
 package br.udesc.ceavi.dsd.model.carro;
 
 import br.udesc.ceavi.dsd.model.casa.ICasa;
-import java.util.Random;
 
 /**
  *

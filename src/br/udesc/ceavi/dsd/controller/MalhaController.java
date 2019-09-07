@@ -333,9 +333,4 @@ public class MalhaController {
         return casa.getValor() != 0;
     }
 
-    public void rebut() {
-        this.initCasas();
-        this.setExtremidadeCasa();
-        this.setCommands();
-    }
 }

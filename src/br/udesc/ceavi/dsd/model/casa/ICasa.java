@@ -11,9 +11,9 @@ public interface ICasa {
 
     public void addRota(Movimentacao command);
 
-    public int getColunm();
-
     public Movimentacao getRota();
+
+    public int getColunm();
 
     public int getRow();
 
@@ -23,15 +23,14 @@ public interface ICasa {
 
     public void mover(ICarro carro);
 
-    public void setCarro(ICarro carro);
-
     public boolean reservarCasa();
+
+    public void setCarro(ICarro carro);
 
     public ICarro getCarro();
 
-    public void repintar();
-
     public ICarro removerCarro();
 
+    public void repintar();
 
 }

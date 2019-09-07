@@ -36,7 +36,6 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
     private JButton btnStart;
 
     private JButton btnCarregarNovaMatriz;
-    private JButton btnLimparMatriz;
     private JSpinner jsNumCarro;
     private JLabel lbLimiteCarro;
     private JLabel lbNumCarrosSimulacao;
@@ -49,7 +48,6 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         initFrameProperty();
         initComponnnets();
         initListeners();
-        btnLimparMatriz.setEnabled(false);
         controller.addObserver(this);
     }
 
@@ -160,16 +158,6 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         cons.insets = insets;
         btnCarregarNovaMatriz = new JButton("Carregar Nova Matriz");
         jpConfingIII.add(btnCarregarNovaMatriz, cons);
-        btnLimparMatriz = new JButton("Limpar Matriz");
-
-        cons = new GridBagConstraints();
-        cons.gridx = 1;
-        cons.gridy = 2;
-        cons.ipadx = 25;
-        cons.gridwidth = 1;
-        cons.fill = GridBagConstraints.HORIZONTAL;
-        cons.insets = insets;
-        jpConfingIII.add(btnLimparMatriz, cons);
 
         cons = new GridBagConstraints();
         cons.gridx = 0;
@@ -204,7 +192,6 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         this.btnStart.addActionListener((e) -> btnStartListeners());
         this.btnStop.addActionListener((e) -> btnStopListeners());
         this.btnCarregarNovaMatriz.addActionListener((e) -> btnCarregarNovaMatrizListeners());
-        this.btnLimparMatriz.addActionListener((e) -> btnLimparMatrizListeners());
     }
 
     public void initTableFrame() {
@@ -230,18 +217,6 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
     @Override
     public void notificarSimulacaoFinalizada() {
         btnCarregarNovaMatriz.setEnabled(true);
-        btnLimparMatriz.setEnabled(false);
-        btnStart.setEnabled(true);
-    }
-
-    @Override
-    public void notificarRepawnEnd() {
-        btnLimparMatriz.setEnabled(true);
-    }
-
-    private void btnLimparMatrizListeners() {
-        controller.matarCarros();
-        btnLimparMatriz.setEnabled(false);
         btnStart.setEnabled(true);
         jsNumCarro.setEnabled(true);
     }
@@ -255,19 +230,14 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
         jsNumCarro.setEnabled(false);
         btnStart.setEnabled(false);
         btnStop.setEnabled(true);
-        btnLimparMatriz.setEnabled(false);
         btnCarregarNovaMatriz.setEnabled(false);
 
         int numeroCarro = (int) jsNumCarro.getValue();
-
-        System.out.println(numeroCarro);
         controller.startSimulation(numeroCarro);
     }
 
     private void btnCarregarNovaMatrizListeners() {
-        EventQueue.invokeLater(() -> {
-            new FrameConfig(this).setVisible(true);
-        });
+        EventQueue.invokeLater(() -> new FrameConfig(this).setVisible(true));
     }
 
 }
