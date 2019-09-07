@@ -1,12 +1,10 @@
 package br.udesc.ceavi.dsd.command;
 
-import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -16,21 +14,17 @@ import java.util.logging.Logger;
 public class MoverNCasaCommand implements Command {
 
     //Começo de Tudo
-    private ICasa origem;
+    private final ICasa origem;
     //Fim de Tudo
-    private ICasa destino;
+    private final ICasa destino;
 
     //Armazena todos o caminho INCLUSIVEL O destino
-    private List<ICasa> caminho;
-
-    //Armazena as casa cujo o recurso esta sobre nossa posse
-    private List<ICasa> casaLivres;
+    private final List<ICasa> caminho;
 
     public MoverNCasaCommand(ICasa origem, ICasa destino, List<ICasa> caminho) {
         this.origem = origem;
         this.destino = destino;
-        this.caminho = caminho;
-        this.casaLivres = new ArrayList<>();
+        this.caminho = Collections.unmodifiableList(caminho);
     }
 
     @Override
@@ -47,33 +41,22 @@ public class MoverNCasaCommand implements Command {
                     break;
                 }
             }
+            
             if (!liberado) {
-                carro.sleep(carro.getRandom().nextInt(1500));
+                carro.sleep(100 + carro.getRandom().nextInt(200));
             }
 
-//            for (ICasa casa : caminho) {
-//                if (casa.reservarCasa()) { //Tentando
-//                    casaLivres.add(casa);//Sucesso
-//
-//                    liberado = caminhoInteiramenteLivre();
-//
-//                } else {//Insucesso ao pegar o recurso de uma casa
-//                    casaLivres.forEach(casaLivre -> casaLivre.liberarRecurso()); //Liberando as que eu peguei
-//                    casaLivres.clear();
-//                    break;
-//                }
-//            }
         } while (!liberado);
 
         int velocidade = carro.getVelocidade();
-        
+
         origem.removerCarro();
         origem.repintar();
 
         ICasa primeiracasa = caminho.get(0);
         primeiracasa.setCarro(carro);
         primeiracasa.repintar();
-        carro.setCasa(caminho.get(0));
+        carro.setCasa(primeiracasa);
 
         origem.liberarRecurso();
         carro.sleep(velocidade);
@@ -89,46 +72,11 @@ public class MoverNCasaCommand implements Command {
             novaCasa.setCarro(carro);
             carro.setCasa(novaCasa);
             novaCasa.repintar();
-            
+
             casaAtual.liberarRecurso();
 
-            carro.sleep(carro.getVelocidade());
+            carro.sleep(velocidade);
         }
-//
-//        origem.removerCarro();
-//        origem.repintar();
-//        casaLivres.get(0).setCarro(carro);
-//        casaLivres.get(0).repintar();
-//        carro.sleep(carro.getVelocidade());
-//        for (int i = 0; i < casaLivres.size() - 1; i++) {
-//            //saindo da casa
-//            ICasa casaAtual = casaLivres.get(i);
-//            casaAtual.removerCarro();
-//            casaAtual.repintar();
-//            casaAtual.liberarRecurso();
-//
-//            //entrando na casa
-//            ICasa novaCasa = casaLivres.get(i + 1);
-//            novaCasa.setCarro(carro);
-//            novaCasa.repintar();
-//
-//            carro.sleep(carro.getVelocidade());
-//        }
-//
-//        carro.setCasa(destino);
-//        destino.setCarro(carro);
-//        casaLivres.clear();
-//        origem.liberarRecurso();
-    }
-
-    /**
-     * Retorna se todas se o caminho todos esta livre
-     *
-     * @param liberado
-     * @return
-     */
-    private boolean caminhoInteiramenteLivre() {
-        return casaLivres.size() == caminho.size();
     }
 
     private boolean liberarRecursos(int i) {

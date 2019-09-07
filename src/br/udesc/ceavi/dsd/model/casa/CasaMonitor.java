@@ -25,7 +25,7 @@ public class CasaMonitor extends Casa {
     public void mover(ICarro carro) {
         lock.lock();
         ICasa casaAnterior = carro.getCasa();
-        if (casaAnterior != null){
+        if (casaAnterior != null) {
             casaAnterior.setCarro(null);
         }
         carro.setCasa(this);
@@ -33,7 +33,7 @@ public class CasaMonitor extends Casa {
     }
 
     @Override
-    public  void liberarRecurso() {
+    public void liberarRecurso() {
         lock.unlock();
     }
 
@@ -44,8 +44,8 @@ public class CasaMonitor extends Casa {
             return lock.tryLock(15, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ex) {
             Logger.getLogger(CasaMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-        return false;
     }
 
 }

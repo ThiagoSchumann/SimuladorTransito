@@ -18,7 +18,7 @@ public class CasaSemaforo extends Casa {
 
     public CasaSemaforo(int valor, int colunm, int row) {
         super(valor, colunm, row);
-        mutex = new Semaphore(1);
+        mutex = new Semaphore(1, true);
     }
 
     @Override
@@ -37,26 +37,18 @@ public class CasaSemaforo extends Casa {
     }
 
     @Override
+    public void liberarRecurso() {
+        mutex.release();
+    }
+
+    @Override
     public boolean reservarCasa() {
         try {
-            return mutex.tryAcquire(50, TimeUnit.MILLISECONDS);
+            return mutex.tryAcquire(15, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ex) {
             Logger.getLogger(CasaSemaforo.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
 
-    @Override
-    public void liberarRecurso() {
-        mutex.release();
-    }
-
-    @Override
-    public Command getRota() {
-        if (movimentacoes.size() > 1) {
-            return movimentacoes.get(random.nextInt(movimentacoes.size()));
-        } else {
-            return movimentacoes.get(0);
-        }
-    }
 }
