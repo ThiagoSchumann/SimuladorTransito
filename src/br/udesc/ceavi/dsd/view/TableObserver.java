@@ -13,8 +13,4 @@ public interface TableObserver {
 
     public void repaint();
 
-    public void drawRespawn(int colunm, int row);
-
-    public void drawDeath(int colunm, int row);
-
 }

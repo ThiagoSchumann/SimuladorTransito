@@ -30,8 +30,6 @@ public interface ICarro {
 
     public void join() throws InterruptedException;
 
-    public Random getRandom();
-
     public void sleep(int nextInt);
 
     public int getVelocidade();

@@ -1,4 +1,4 @@
-package br.udesc.ceavi.dsd.command;
+package br.udesc.ceavi.dsd.strategy;
 
 import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.carro.Carro;
@@ -10,12 +10,12 @@ import br.udesc.ceavi.dsd.model.casa.ICasa;
  * @author Gustavo C. Santos
  * @since 30/08/2019
  */
-public class EntraNaMalhaCommand implements Command {
+public class EntraNaMalha implements Movimentacao {
 
     private ICasa casa;
     private ICarro carro;
 
-    public EntraNaMalhaCommand(Carro carro, ICasa casa) {
+    public EntraNaMalha(Carro carro, ICasa casa) {
         this.casa = casa;
         this.carro = carro;
     }

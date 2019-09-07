@@ -231,6 +231,7 @@ public class FramePrincipal extends JFrame implements FramePrincipalObserver {
     public void notificarSimulacaoFinalizada() {
         btnCarregarNovaMatriz.setEnabled(true);
         btnLimparMatriz.setEnabled(false);
+        btnStart.setEnabled(true);
     }
 
     @Override

@@ -4,8 +4,6 @@ import br.udesc.ceavi.dsd.util.LerArquivoMatrix;
 import br.udesc.ceavi.dsd.abstractfactory.AbstractFactory;
 import br.udesc.ceavi.dsd.abstractfactory.FactoryMonitor;
 import br.udesc.ceavi.dsd.abstractfactory.FactorySemaphore;
-import br.udesc.ceavi.dsd.command.Command;
-import br.udesc.ceavi.dsd.command.CommandInvoker;
 import br.udesc.ceavi.dsd.model.carro.Carro;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
@@ -47,11 +45,9 @@ public class SystemController {
 
     private Map<Long, ICarro> carrosEmEspera;
     private Map<Long, ICarro> carrosEmMalha;
-    private CommandInvoker commandInvoker;
     private List<FramePrincipalObserver> observers;
 
     private SystemController() {
-        this.commandInvoker = new CommandInvoker();
         this.carrosEmMalha = new HashMap<>();
         this.carrosEmEspera = new HashMap<>();
         this.simulationAtivo = false;
@@ -112,11 +108,12 @@ public class SystemController {
     public void startSimulation(int numeroCarro) {
         this.numeroDeCarroObjetivo = numeroCarro;
         this.simulationAtivo = true;
+
         for (int i = 0; i < numeroDeCarroObjetivo; i++) {
             newCarroEmMalha();
         }
+
         Thread respawn = new Thread(() -> addAutomatico());
-        respawn.setPriority(Thread.MAX_PRIORITY);
         respawn.start();
     }
 
@@ -130,14 +127,6 @@ public class SystemController {
         carrosEmEspera.remove(carro.getId());
         carrosEmMalha.put(carro.getId(), carro);
         SwingUtilities.invokeLater(() -> observers.forEach((observer) -> observer.notificarNumeroDeCarro(carrosEmMalha.size())));
-    }
-
-    public Random getRandom() {
-        return random;
-    }
-
-    public void execute(Command command) {
-        commandInvoker.execute(command);
     }
 
     public void notificarCarroMorto(ICarro carro) {
@@ -156,16 +145,27 @@ public class SystemController {
                 newCarroEmMalha();
             }
             try {
-                Thread.sleep(150);
+                Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
-        observers.forEach(obs -> obs.notificarRepawnEnd());
         carrosEmEspera.values().parallelStream().forEach(carroEmpera -> carroEmpera.desativar());
         carrosEmEspera.clear();
-        System.out.println("Oi");
+
+        List<ICarro> arrayList = new ArrayList<>();
+        arrayList.addAll(carrosEmMalha.values());
+        observers.forEach(obs -> obs.notificarRepawnEnd());
+        
+        arrayList.forEach((value) -> {
+            try {
+                value.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(SystemController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+
         observers.forEach(obs -> obs.notificarSimulacaoFinalizada());
     }
 
@@ -186,5 +186,6 @@ public class SystemController {
             obs.notificarSimulacaoFinalizada();
             obs.notificarNumeroDeCarro(carrosEmMalha.size());
         });
+        malhaController.rebut();
     }
 }

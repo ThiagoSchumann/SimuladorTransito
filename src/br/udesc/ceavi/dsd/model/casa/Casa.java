@@ -1,11 +1,11 @@
 package br.udesc.ceavi.dsd.model.casa;
 
-import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import br.udesc.ceavi.dsd.strategy.Movimentacao;
 
 /**
  *
@@ -18,7 +18,7 @@ public abstract class Casa implements ICasa {
     protected int colunm, row;
     protected int valor;
     protected Random random;
-    protected List<Command> movimentacoes;
+    protected List<Movimentacao> movimentacoes;
 
     public Casa(int valor, int colunm, int row) {
         this.movimentacoes = new ArrayList<>();
@@ -28,7 +28,7 @@ public abstract class Casa implements ICasa {
     }
 
     @Override
-    public void addRota(Command command) {
+    public void addRota(Movimentacao command) {
         if (!movimentacoes.isEmpty()) {
             this.random = new Random();
         }
@@ -36,7 +36,7 @@ public abstract class Casa implements ICasa {
     }
 
     @Override
-    public Command getRota() {
+    public Movimentacao getRota() {
         if (movimentacoes.size() > 1) {
             return movimentacoes.get(random.nextInt(movimentacoes.size()));
         } else {

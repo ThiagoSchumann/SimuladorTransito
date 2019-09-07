@@ -1,11 +1,11 @@
 package br.udesc.ceavi.dsd.model.casa;
 
-import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import br.udesc.ceavi.dsd.strategy.Movimentacao;
 
 /**
  *

@@ -1,4 +1,4 @@
-package br.udesc.ceavi.dsd.command;
+package br.udesc.ceavi.dsd.strategy;
 
 import br.udesc.ceavi.dsd.controller.SystemController;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
@@ -9,11 +9,11 @@ import br.udesc.ceavi.dsd.model.casa.ICasa;
  * @author Gustavo C. Santos
  * @since 29/08/2019
  */
-public class MatarCarroCommand implements Command {
+public class MatarCarro implements Movimentacao {
 
-    private ICasa origem;
+    private final ICasa origem;
 
-    public MatarCarroCommand(ICasa origem) {
+    public MatarCarro(ICasa origem) {
         this.origem = origem;
     }
 

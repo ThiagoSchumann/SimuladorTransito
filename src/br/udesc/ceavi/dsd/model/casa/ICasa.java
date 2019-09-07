@@ -1,7 +1,7 @@
 package br.udesc.ceavi.dsd.model.casa;
 
-import br.udesc.ceavi.dsd.command.Command;
 import br.udesc.ceavi.dsd.model.carro.ICarro;
+import br.udesc.ceavi.dsd.strategy.Movimentacao;
 
 /**
  *
@@ -9,11 +9,11 @@ import br.udesc.ceavi.dsd.model.carro.ICarro;
  */
 public interface ICasa {
 
-    public void addRota(Command command);
+    public void addRota(Movimentacao command);
 
     public int getColunm();
 
-    public Command getRota();
+    public Movimentacao getRota();
 
     public int getRow();
 

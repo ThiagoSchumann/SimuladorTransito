@@ -25,14 +25,14 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class MalhaTable extends JTable implements TableObserver {
 
-    private SystemController controller;
+    private MalhaController controller;
     private JPanel parentPanel;
     private BufferedImage[][] orginalMalhaImages;
     private BufferedImage[][] canvas;
 
     public MalhaTable(JPanel parent) {
-        this.controller = SystemController.getInstance();
-        this.controller.getMalhaController().anexar(this);
+        this.controller = SystemController.getInstance().getMalhaController();
+        this.controller.anexar(this);
         this.parentPanel = parent;
         startBuffert();
     }
@@ -47,7 +47,6 @@ public class MalhaTable extends JTable implements TableObserver {
         parentPanel.revalidate();
         this.repaint();
         this.revalidate();
-        this.controller.getMalhaController().drawExpecialCasa();
     }
 
     /**
@@ -71,8 +70,8 @@ public class MalhaTable extends JTable implements TableObserver {
     private void initImages() {
         for (int colunm = 0; colunm < controller.getColumn(); colunm++) {
             for (int row = 0; row < controller.getRow(); row++) {
-                orginalMalhaImages[colunm][row] = Image.getImagem((int) controller.getCasa(colunm, row));
-                canvas[colunm][row] = Image.getImagem((int) controller.getCasa(colunm, row));
+                orginalMalhaImages[colunm][row] = Image.getImagem((int) controller.getCasaValue(colunm, row));
+                canvas[colunm][row] = Image.getImagem((int) controller.getCasaValue(colunm, row));
             }
         }
         this.repaint();
@@ -165,28 +164,5 @@ public class MalhaTable extends JTable implements TableObserver {
         this.repaint();
         parentPanel.repaint();
     }
-
-    @Override
-    public void drawRespawn(int colunm, int row) {
-//        clearTableCell(colunm, row);
-//        BufferedImage casa = this.canvas[colunm][row];
-//        Graphics2D g = casa.createGraphics();
-//        g.setColor(Color.GREEN);
-//        g.drawOval(0, 0, casa.getWidth(), casa.getHeight());
-//        g.dispose();
-
-    }
-
-    @Override
-    public void drawDeath(int colunm, int row) {
-//        clearTableCell(colunm, row);
-//        BufferedImage casa = this.canvas[colunm][row];
-//        Graphics2D g = casa.createGraphics();
-//        g.setColor(Color.RED);
-//        g.drawOval(0, 0, casa.getWidth(), casa.getHeight());
-//        g.dispose();
-
-    }
-    
 
 }

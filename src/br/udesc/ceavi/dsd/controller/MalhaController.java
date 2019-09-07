@@ -1,17 +1,16 @@
 package br.udesc.ceavi.dsd.controller;
 
 import br.udesc.ceavi.dsd.abstractfactory.AbstractFactory;
-import br.udesc.ceavi.dsd.command.Command;
-import br.udesc.ceavi.dsd.command.MatarCarroCommand;
-import br.udesc.ceavi.dsd.command.MoverNCasaCommand;
-import br.udesc.ceavi.dsd.command.MoverUmaCasaCommand;
+import br.udesc.ceavi.dsd.strategy.MatarCarro;
+import br.udesc.ceavi.dsd.strategy.MoverNCasa;
+import br.udesc.ceavi.dsd.strategy.MoverUmaCasa;
 import br.udesc.ceavi.dsd.model.casa.Casa;
 import br.udesc.ceavi.dsd.model.casa.ICasa;
 import br.udesc.ceavi.dsd.view.TableObserver;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -29,6 +28,8 @@ public class MalhaController {
 
     private List<TableObserver> observers;
 
+    private Random random;
+
     public MalhaController(int[][] matrix) {
         this.matrix = matrix;
         this.observers = new ArrayList<>();
@@ -36,6 +37,7 @@ public class MalhaController {
         this.casasDeath = new ArrayList<>();
         this.casasRespawn = new ArrayList<>();
         this.numCasasValida = 0;
+        this.random = new Random();
     }
 
     public void initMalha() {
@@ -74,6 +76,8 @@ public class MalhaController {
     }
 
     private void setExtremidadeCasa() {
+        casasDeath.clear();
+        casasRespawn.clear();
         for (int linha = 0; linha < getRow(); linha++) {
             for (int coluna = 0; coluna < getColumn(); coluna++) {
                 //Se houver valor na casa significa que a mesma faz parte da malha
@@ -152,7 +156,7 @@ public class MalhaController {
         //Adicionar os commands dentro da casa
         //Add Pontos de Morte
         for (ICasa iCasa : casasDeath) {
-            iCasa.addRota(new MatarCarroCommand(iCasa));
+            iCasa.addRota(new MatarCarro(iCasa));
         }
         //Agora percorre a estrutura para encontrar as possíveis rotas de cada casa
         for (int linha = 0; linha < getRow(); linha++) {
@@ -168,7 +172,7 @@ public class MalhaController {
                                 if (isCruzamento(destino)) {
                                     construirCaminhoCruzamenteo(origem);
                                 } else {
-                                    origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                    origem.addRota(new MoverUmaCasa(origem, destino));
                                 }
                                 break;
                             case 2:
@@ -176,7 +180,7 @@ public class MalhaController {
                                 if (isCruzamento(destino)) {
                                     construirCaminhoCruzamenteo(origem);
                                 } else {
-                                    origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                    origem.addRota(new MoverUmaCasa(origem, destino));
                                 }
                                 break;
                             case 3:
@@ -184,7 +188,7 @@ public class MalhaController {
                                 if (isCruzamento(destino)) {
                                     construirCaminhoCruzamenteo(origem);
                                 } else {
-                                    origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                    origem.addRota(new MoverUmaCasa(origem, destino));
                                 }
                                 break;
                             case 4:
@@ -192,11 +196,11 @@ public class MalhaController {
                                 if (isCruzamento(destino)) {
                                     construirCaminhoCruzamenteo(origem);
                                 } else {
-                                    origem.addRota(new MoverUmaCasaCommand(origem, destino));
+                                    origem.addRota(new MoverUmaCasa(origem, destino));
                                 }
                                 break;
                             default:
-                                origem.addRota(new MatarCarroCommand(origem));
+                                origem.addRota(new MatarCarro(origem));
                                 break;
                         }
                     }
@@ -210,17 +214,6 @@ public class MalhaController {
         return !(valor == 1 || valor == 2 || valor == 3 || valor == 4);
     }
 
-    public void drawExpecialCasa() {
-        for (TableObserver observer : observers) {
-            for (ICasa casa : casasRespawn) {
-                observer.drawRespawn(casa.getColunm(), casa.getRow());
-            }
-            for (ICasa casa : casasDeath) {
-                observer.drawDeath(casa.getColunm(), casa.getRow());
-            }
-        }
-    }
-
     public int getNumCasasValida() {
         return numCasasValida;
     }
@@ -230,19 +223,15 @@ public class MalhaController {
     }
 
     public ICasa getRespawnAleatorio() {
-        return casasRespawn.get(SystemController.getInstance().getRandom().nextInt(casasRespawn.size()));
+        return casasRespawn.get(random.nextInt(casasRespawn.size()));
     }
 
     public void clearCasa(int colunm, int row) {
-        for (TableObserver observer : observers) {
-            observer.clearTableCell(colunm, row);
-        }
+        observers.forEach((observer) -> observer.clearTableCell(colunm, row));
     }
 
     public void printCasaCarro(int color, int colunm, int row) {
-        for (TableObserver observer : observers) {
-            observer.printCarro(color, colunm, row);
-        }
+        observers.forEach((observer) -> observer.printCarro(color, colunm, row));
     }
 
     private void construirCaminhoCruzamenteo(ICasa origem) {
@@ -261,17 +250,17 @@ public class MalhaController {
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() - 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(Movimento1, saida1)));
+                    origem.addRota(new MoverNCasa(origem, saida1, Arrays.asList(Movimento1, saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm()][origem.getRow() - 3];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
+                    origem.addRota(new MoverNCasa(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() - 2];
                 if (isValidHouse(saida3)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
+                    origem.addRota(new MoverNCasa(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
                 }
                 break;
             case 2:
@@ -282,17 +271,17 @@ public class MalhaController {
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() + 1][origem.getRow() + 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(Movimento1, saida1)));
+                    origem.addRota(new MoverNCasa(origem, saida1, Arrays.asList(Movimento1, saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm() + 3][origem.getRow()];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
+                    origem.addRota(new MoverNCasa(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() - 2];
                 if (isValidHouse(saida3)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
+                    origem.addRota(new MoverNCasa(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
                 }
                 break;
             case 3:
@@ -303,17 +292,17 @@ public class MalhaController {
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() + 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(Movimento1, saida1)));
+                    origem.addRota(new MoverNCasa(origem, saida1, Arrays.asList(Movimento1, saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm()][origem.getRow() + 3];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
+                    origem.addRota(new MoverNCasa(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() + 2][origem.getRow() + 2];
                 if (isValidHouse(saida3)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
+                    origem.addRota(new MoverNCasa(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
                 }
                 break;
             case 4:
@@ -324,17 +313,17 @@ public class MalhaController {
                 //Entrada 1
                 saida1 = matrixCasa[origem.getColunm() - 1][origem.getRow() - 1];
                 if (isValidHouse(saida1)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida1, Arrays.asList(Movimento1, saida1)));
+                    origem.addRota(new MoverNCasa(origem, saida1, Arrays.asList(Movimento1, saida1)));
                 }
                 //Entrada 2
                 saida2 = matrixCasa[origem.getColunm() - 3][origem.getRow()];
                 if (isValidHouse(saida2)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
+                    origem.addRota(new MoverNCasa(origem, saida2, Arrays.asList(Movimento1, Movimento2, saida2)));
                 }
                 //Entrada 3
                 saida3 = matrixCasa[origem.getColunm() - 2][origem.getRow() + 2];
                 if (isValidHouse(saida3)) {
-                    origem.addRota(new MoverNCasaCommand(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
+                    origem.addRota(new MoverNCasa(origem, saida3, Arrays.asList(Movimento1, Movimento2, Movimento3, saida3)));
                 }
                 break;
         }
@@ -342,5 +331,11 @@ public class MalhaController {
 
     public boolean isValidHouse(ICasa casa) {
         return casa.getValor() != 0;
+    }
+
+    public void rebut() {
+        this.initCasas();
+        this.setExtremidadeCasa();
+        this.setCommands();
     }
 }
