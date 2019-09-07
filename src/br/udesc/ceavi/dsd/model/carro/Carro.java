@@ -72,6 +72,11 @@ public class Carro extends Thread implements ICarro {
     }
 
     @Override
+    public int getVelocidade() {
+        return velocidade;
+    }
+
+    @Override
     public void sleep(int tempo) {
         try {
             Thread.sleep(tempo);

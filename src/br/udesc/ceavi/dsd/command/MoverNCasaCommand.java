@@ -35,56 +35,90 @@ public class MoverNCasaCommand implements Command {
 
     @Override
     public void executar() {
-        boolean liberado = false;
+        ICarro carro = origem.getCarro();
+        boolean liberado;
         do {
+            liberado = true;
             //Vai tentar pegar o recurso de todas!!
-            for (ICasa casa : caminho) {
-                if (casa.reservarCasa()) { //Tentando
-                    casaLivres.add(casa);//Sucesso
-
-                    liberado = caminhoInteiramenteLivre();
-
-                } else {//Insucesso ao pegar o recurso de uma casa
-                    casaLivres.forEach(casaLivre -> casaLivre.liberarRecurso()); //Liberando as que eu peguei
-                    casaLivres.clear();
+            for (int i = 0; i < caminho.size(); i++) {
+                ICasa casa = caminho.get(i);
+                if (!casa.reservarCasa()) {
+                    liberado = liberarRecursos(i);
                     break;
                 }
             }
-            try {
-                ((Thread) origem.getCarro()).sleep(SystemController.getInstance().getRandom().nextInt(1000));
-            } catch (InterruptedException ex) {
-                Logger.getLogger(MoverNCasaCommand.class.getName()).log(Level.SEVERE, null, ex);
+            if (!liberado) {
+                carro.sleep(carro.getRandom().nextInt(1500));
             }
+
+//            for (ICasa casa : caminho) {
+//                if (casa.reservarCasa()) { //Tentando
+//                    casaLivres.add(casa);//Sucesso
+//
+//                    liberado = caminhoInteiramenteLivre();
+//
+//                } else {//Insucesso ao pegar o recurso de uma casa
+//                    casaLivres.forEach(casaLivre -> casaLivre.liberarRecurso()); //Liberando as que eu peguei
+//                    casaLivres.clear();
+//                    break;
+//                }
+//            }
         } while (!liberado);
 
-        ICarro carro = origem.removerCarro();
+        int velocidade = carro.getVelocidade();
+        
+        origem.removerCarro();
         origem.repintar();
-        for (int i = 0; i < casaLivres.size() - 1; i++) {
+
+        ICasa primeiracasa = caminho.get(0);
+        primeiracasa.setCarro(carro);
+        primeiracasa.repintar();
+        carro.setCasa(caminho.get(0));
+
+        origem.liberarRecurso();
+        carro.sleep(velocidade);
+
+        for (int i = 0; i < caminho.size() - 1; i++) {
             //saindo da casa
-            ICasa casaAtual = casaLivres.get(i);
+            ICasa casaAtual = caminho.get(i);
             casaAtual.removerCarro();
             casaAtual.repintar();
-            casaAtual.liberarRecurso();
 
             //entrando na casa
-            ICasa novaCasa = casaLivres.get(i + 1);
+            ICasa novaCasa = caminho.get(i + 1);
             novaCasa.setCarro(carro);
+            carro.setCasa(novaCasa);
             novaCasa.repintar();
+            
+            casaAtual.liberarRecurso();
 
-            if (!(i < casaLivres.size() - 1)) {
-                //Esperando um pouco
-                try {
-                    ((Thread) carro).sleep(600);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(MoverNCasaCommand.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            carro.sleep(carro.getVelocidade());
         }
-
-        carro.setCasa(destino);
-        destino.setCarro(carro);
-        casaLivres.clear();
-        origem.liberarRecurso();
+//
+//        origem.removerCarro();
+//        origem.repintar();
+//        casaLivres.get(0).setCarro(carro);
+//        casaLivres.get(0).repintar();
+//        carro.sleep(carro.getVelocidade());
+//        for (int i = 0; i < casaLivres.size() - 1; i++) {
+//            //saindo da casa
+//            ICasa casaAtual = casaLivres.get(i);
+//            casaAtual.removerCarro();
+//            casaAtual.repintar();
+//            casaAtual.liberarRecurso();
+//
+//            //entrando na casa
+//            ICasa novaCasa = casaLivres.get(i + 1);
+//            novaCasa.setCarro(carro);
+//            novaCasa.repintar();
+//
+//            carro.sleep(carro.getVelocidade());
+//        }
+//
+//        carro.setCasa(destino);
+//        destino.setCarro(carro);
+//        casaLivres.clear();
+//        origem.liberarRecurso();
     }
 
     /**
@@ -95,6 +129,13 @@ public class MoverNCasaCommand implements Command {
      */
     private boolean caminhoInteiramenteLivre() {
         return casaLivres.size() == caminho.size();
+    }
+
+    private boolean liberarRecursos(int i) {
+        for (int j = (i - 1); j >= 0; j--) {
+            caminho.get(j).liberarRecurso();
+        }
+        return false;
     }
 
 }

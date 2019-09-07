@@ -34,4 +34,6 @@ public interface ICarro {
 
     public void sleep(int nextInt);
 
+    public int getVelocidade();
+
 }
